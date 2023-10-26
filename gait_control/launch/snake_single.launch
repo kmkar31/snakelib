@@ -1,0 +1,14 @@
+<launch>
+	<arg name="gait" default="lateral_undulation" />
+	<arg name="snake" default="SEA" />
+   	<rosparam file="$(find param)/param/gait_param.yaml" />
+	<rosparam file="$(find param)/param/run_param.yaml" />
+	<rosparam file="$(find param)/param/compliant_param.yaml" />
+	<param name="gait_type" value="$(arg gait)" />
+	<param name="snake_type" value="$(arg snake)" />
+	<node name="Controller" pkg="gait_control"
+	      type="controller.py" output="screen"/>
+	<node name="hebi_node" pkg="hebi_interface" 
+	      type="hebi_node.py" output="screen" />
+</launch>
+

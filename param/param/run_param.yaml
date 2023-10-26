@@ -1,0 +1,10 @@
+SimLog : 
+        log: 'no'
+        filedir: '~/Biorobotics/snakelib_v2/src/logs/SimLogs'
+SnakeLog :
+        log : 'yes'
+        filedir : '/Biorobotics/snakelib_v2/src/logs/SnakeLogs'
+InternalLog : 
+        filedir : '/Biorobotics/snakelib_v2/src/logs/InternalLog'
+Control_Frequency : 150 #Hz
+Command_Lifetime : 1000.0 #ms

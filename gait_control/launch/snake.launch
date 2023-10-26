@@ -1,0 +1,14 @@
+<launch>
+	<arg name="IRL" default="1" />
+	<arg name="gait" default="stationary" />
+   	<rosparam file="$(find param)/param/gait_param.yaml" />
+	<rosparam file="$(find param)/param/key_param.yaml" />
+	<rosparam file="$(find param)/param/run_param.yaml" />
+	<param name="gait_type" value="$(arg gait)" />
+	<node name="Controller" pkg="gait_control"
+	      type="controller.py" output="screen"/>
+	<node name="hebi_node" pkg="hebi_interface" 
+	      type="hebi_node.py" output="screen" />
+	<node pkg="human_operator" type="keyboard_node.py" name="human" output="screen" />
+</launch>
+
