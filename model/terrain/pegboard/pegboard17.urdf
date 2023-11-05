@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
-<robot name="flat_plane15_15">
-  <link concave="yes" name="flatPlaneLink">
+<robot name="pegboard17">
+  <link name="peg1">
   <contact>
       <lateral_friction value="2"/>
   </contact>
@@ -12,18 +12,17 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-		    <mesh filename="package://model/terrain/meshes/flat_plane15_15.obj" scale="1 1 1"/>
+      	<cylinder radius="0.03" length="0.3"/>
       </geometry>
-       <material name="white">
-        <color rgba="1 1 1 1"/>
+       <material name="blue">
+        <color rgba="0 0 1 1"/>
       </material>
     </visual>
-    <collision concave="yes">
+    <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-	 	    <mesh filename="package://model/terrain/meshes/flat_plane15_15.obj" scale="1 1 1"/>
+      	<cylinder radius="0.03" length="0.3"/>
       </geometry>
     </collision>
   </link>
 </robot>
-<!--- Flat plane 15mx15m-->

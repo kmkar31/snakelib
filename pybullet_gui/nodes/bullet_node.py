@@ -13,6 +13,23 @@ from std_msgs.msg import Header
 
 counter = 0
 
+def load_terrain():
+    rp = rospkg.RosPack()
+    '''
+    terrainPath = rp.get_path("model") + "/terrain/plate1.urdf"
+    #p.loadURDF(terrainPath)
+    terrainPath2 = rp.get_path("model") + "/terrain/plate2.urdf"
+    #p.loadURDF(terrainPath2)
+    terrainPath3 = rp.get_path("model") + "/terrain/flat_plane15_15.urdf"
+    #tp.loadURDF(terrainPath3)
+    '''
+    plane2Id = p.loadURDF("plane.urdf")
+
+    for i in range(20):
+        terrainPath = rp.get_path("model") + "/terrain/pegboard/pegboard" + str(i+1) + '.urdf'
+        p.loadURDF(terrainPath)
+    print("Terrain Loaded")
+
 def callback(msg,args):
     snake_Id = args[0]
     joint_idx = args[1]
@@ -21,15 +38,17 @@ def callback(msg,args):
 
     p.setJointMotorControlArray(bodyUniqueId = snake_Id,jointIndices = joint_idx,controlMode = p.POSITION_CONTROL,
                                 targetPositions=msg.Joint_Ang,targetVelocities=np.zeros(len(joint_idx)),forces=torque_max*np.ones(len(joint_idx)))
-    '''
+    
     global counter
+    
+    '''
     if counter < 3000:
         print("Applying External Forcing")
         #for i in range(16):
             #p.applyExternalForce(snake_Id,joint_idx[6], [0,(-1)**(i+1)*35,0],[0,0,0],p.WORLD_FRAME)
-        p.applyExternalForce(snake_Id,joint_idx[4], [0,50,0],[0,0,0],p.LINK_FRAME)
-        p.applyExternalForce(snake_Id, joint_idx[-4], [0,-50,0],[0,0,0],p.LINK_FRAME)
-        p.applyExternalForce(snake_Id, joint_idx[9], [20,0,0],[0,0,0],p.LINK_FRAME)
+        p.applyExternalForce(snake_Id,joint_idx[0], [-60,0,0],[0,0,0],p.WORLD_FRAME)
+        p.applyExternalForce(snake_Id, joint_idx[-1], [60,0,0],[0,0,0],p.WORLD_FRAME)
+        #p.applyExternalForce(snake_Id, joint_idx[9], [20,0,0],[0,0,0],p.LINK_FRAME)
         #p.applyExternalTorque(snake_Id,joint_idx[5], [0,0,8],p.WORLD_FRAME)
         #p.applyExternalTorque(snake_Id,joint_idx[-5], [0,0,-8],p.WORLD_FRAME)
         counter = counter + 1
@@ -70,19 +89,11 @@ def init_bullet():
     p.setAdditionalSearchPath(pybullet_data.getDataPath())
     p.setGravity(0,0,-9.81)
     print("PyBullet Physics Environment Ready")
-    #plane2Id = p.loadURDF("plane.urdf")
-    rp = rospkg.RosPack()
     
-    terrainPath = rp.get_path("model") + "/terrain/plate1.urdf"
-    terrainId = p.loadURDF(terrainPath)
-    terrainPath2 = rp.get_path("model") + "/terrain/plate2.urdf"
-    terrainId2 = p.loadURDF(terrainPath2)
-    terrainPath3 = rp.get_path("model") + "/terrain/flat_plane15_15.urdf"
-    terrainId3 = p.loadURDF(terrainPath3)
+    load_terrain()
     startPos = [0,0,0.1]
-    startOrientation = p.getQuaternionFromEuler([90,0,0])
-    print("Terrain Loaded")
-
+    startOrientation = p.getQuaternionFromEuler([90,0,90])
+    rp = rospkg.RosPack()
     # Load Snake
     path = rp.get_path("model") + "/SEA/SEA_snake.urdf"
     snake_Id = p.loadURDF(path,startPos, startOrientation)

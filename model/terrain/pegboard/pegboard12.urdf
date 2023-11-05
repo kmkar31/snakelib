@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<robot name="pegboard12">
+  <link name="peg1">
+  <contact>
+      <lateral_friction value="2"/>
+  </contact>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-2.5 0.15 0"/>
+       <mass value=".0"/>
+       <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="-2.5 0.15 0"/>
+      <geometry>
+      	<cylinder radius="0.03" length="0.3"/>
+      </geometry>
+       <material name="blue">
+        <color rgba="0 0 1 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="-2.5 0.15 0"/>
+      <geometry>
+      	<cylinder radius="0.03" length="0.3"/>
+      </geometry>
+    </collision>
+  </link>
+</robot>

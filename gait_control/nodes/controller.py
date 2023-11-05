@@ -6,6 +6,7 @@ from src.snake import Snake
 from std_msgs.msg import Header
 import time
 import rospkg
+import os
 
 def process_cmd(publisher, t, angle=[]):
     msg = JointCmd()
@@ -25,8 +26,7 @@ def process_feedback(feedback, args):
     snake = args[1]
     t = (rospy.Time.now() - args[2]).to_sec()
 
-    [angles, Ad] = snake.comply(feedback.Force, t)
-    print(Ad[0][0])
+    angles = snake.comply(feedback.Force, t)
     msg = JointCmd()
     msg.cmd_name = "Joint Angle SET"
     msg.param_name = "Joint Angles"
@@ -38,7 +38,16 @@ def process_feedback(feedback, args):
 def log(snake, runStart, t):
     filename = "../" + rospy.get_param("/InternalLog/filedir") + "/" + str(runStart) + ".csv"
     f = open(filename, 'a+')
-    f.write(str(t) + "," + str(snake.sigma_o["A_odd"]) + "," + str(snake.sigma_d["A_odd"][0][0]) + "," + str(snake.shapeForce[0][0]) + "\n")
+    if os.path.getsize(filename) == 0:
+        f.write("Time," + ','.join(list(snake.sigma_o.keys())) + "," + ','.join(list(snake.sigma_d.keys())) + ",Shape Force" + "\n")
+    nom = list(snake.sigma_o.values()) 
+    des = list(snake.sigma_d.values())
+    f.write(str(t) + ",")
+    for i in range(len(nom)):
+        f.write(str(nom[i])+ ",")
+    for i in range(len(des)):
+        f.write(str(des[i])+",")
+    f.write(str(snake.shapeForce[0][0]) + "\n")
     f.close()
 
 
@@ -75,7 +84,7 @@ Comply = rospy.get_param("/comply")
 if Comply:
     FeedbackListener = rospy.Subscriber("StateFeedback", StateFeedback, process_feedback, (JointPublisher, snake, StartTime))
     print("Listening to Torque Feedback")
-    process_cmd(JointPublisher,0,snake.resetJoints())
+    #process_cmd(JointPublisher,0,snake.resetJoints())
 
 
 while not(rospy.is_shutdown()):

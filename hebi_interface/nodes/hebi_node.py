@@ -57,15 +57,15 @@ for i in range(5):
     sleep(2)
     if moduleList is not None:
         break
-
+print(moduleList)
 num_modules = 0
 for x in moduleList.entrylist:
     print(f'{x.family} | {x.name}')
     num_modules += 1
 if num_modules==16:
     print("All Modules Detected")
-#else:
-    #raise Exception("All Modules not functioning")
+else:
+    raise Exception("All Modules not functioning")
 
 modules = moduleList.get_group_from_family('*')
 
