@@ -62,7 +62,7 @@ num_modules = 0
 for x in moduleList.entrylist:
     print(f'{x.family} | {x.name}')
     num_modules += 1
-if num_modules==16:
+if num_modules==rospy.get_param('/N'):
     print("All Modules Detected")
 else:
     raise Exception("All Modules not functioning")

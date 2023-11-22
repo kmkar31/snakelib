@@ -1,11 +1,11 @@
 <launch>
-	<arg name="gait" default="linear_progression" />
+	<arg name="gait" default="stationary" />
     	<rosparam file="$(find param)/param/gait_param.yaml" />
 	<rosparam file="$(find param)/param/key_param.yaml" />
 	<rosparam file="$(find param)/param/run_param.yaml" />
 	<rosparam file="$(find param)/param/compliant_param.yaml" />
 	<param name="gait_type" value="$(arg gait)" />
-	<param name="snake_type" value="SEA"/>
+	<param name="snake_type" value="RSnake"/>
 	<node pkg="pybullet_gui" type="bullet_node.py" name="bullet_node" output="screen" />
 	<node name="Publisher" pkg="gait_control" type="controller.py" output="screen"/>
 	<node pkg="human_operator" type="keyboard_node.py" name="human" output="screen" />

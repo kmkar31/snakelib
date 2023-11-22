@@ -1,0 +1,12 @@
+{
+    "python.autoComplete.extraPaths": [
+        "/home/kmkar/Biorobotics/snakelib_v2/devel/lib/python3/dist-packages",
+        "/home/kmkar/Biorobotics/snakelib/devel/lib/python3/dist-packages",
+        "/opt/ros/noetic/lib/python3/dist-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/home/kmkar/Biorobotics/snakelib_v2/devel/lib/python3/dist-packages",
+        "/home/kmkar/Biorobotics/snakelib/devel/lib/python3/dist-packages",
+        "/opt/ros/noetic/lib/python3/dist-packages"
+    ]
+}

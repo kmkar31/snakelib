@@ -17,17 +17,24 @@ def load_terrain():
     rp = rospkg.RosPack()
     '''
     terrainPath = rp.get_path("model") + "/terrain/plate1.urdf"
-    #p.loadURDF(terrainPath)
+    p.loadURDF(terrainPath)
     terrainPath2 = rp.get_path("model") + "/terrain/plate2.urdf"
-    #p.loadURDF(terrainPath2)
+    p.loadURDF(terrainPath2)
+    terrainPath3 = rp.get_path("model") + "/terrain/plate3.urdf"
+    p.loadURDF(terrainPath3)
+    terrainPath4 = rp.get_path("model") + "/terrain/plate4.urdf"
+    p.loadURDF(terrainPath4)
+    terrainPath5 = rp.get_path("model") + "/terrain/plate5.urdf"
+    p.loadURDF(terrainPath5)
     terrainPath3 = rp.get_path("model") + "/terrain/flat_plane15_15.urdf"
-    #tp.loadURDF(terrainPath3)
+    #p.loadURDF(terrainPath3)
     '''
-    plane2Id = p.loadURDF("plane.urdf")
-
+    p.loadURDF("plane.urdf")
+    '''
     for i in range(20):
         terrainPath = rp.get_path("model") + "/terrain/pegboard/pegboard" + str(i+1) + '.urdf'
         p.loadURDF(terrainPath)
+    '''
     print("Terrain Loaded")
 
 def callback(msg,args):
@@ -92,10 +99,10 @@ def init_bullet():
     
     load_terrain()
     startPos = [0,0,0.1]
-    startOrientation = p.getQuaternionFromEuler([90,0,90])
+    startOrientation = p.getQuaternionFromEuler([0,90,0])
     rp = rospkg.RosPack()
     # Load Snake
-    path = rp.get_path("model") + "/SEA/SEA_snake.urdf"
+    path = rp.get_path("model") + "/RSnake/RSnake.urdf"
     snake_Id = p.loadURDF(path,startPos, startOrientation)
     joint_idx = parse_joint_info(snake_Id)
     print("Snake Robot Loaded")
@@ -111,6 +118,7 @@ def parse_joint_info(snake_Id): # The URDF file has fixed joints defined to desc
         joint_info = p.getJointInfo(snake_Id,i)
         if joint_info[2] == p.JOINT_REVOLUTE: # JOINT_REVOLUTE shows up as index 0 in joint info ; prismatic as 1 and fixed as 4
             joint_idx.append(i)
+    print(len(joint_idx))
     return joint_idx
 
 def process_feedback(forcevec):

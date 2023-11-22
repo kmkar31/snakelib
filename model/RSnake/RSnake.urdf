@@ -1,0 +1,410 @@
+<?xml version="1.0"?>
+<!-- https://docs.hebi.us/resources/datasheets/R-SeriesDatasheet.pdf -->
+
+<!-- Inertia approximated as sphere-->
+<!-- Mass computed by summing the bracket and module masses -->
+
+<robot name="RSNAKE_urdf">
+	<link name="kdl_dummy_root"/>
+	<joint name="kdl_dummy_root_to_module_0" type="fixed">
+		<parent link="kdl_dummy_root"/>
+		<child link="module_0"/>
+		<origin rpy="0 1.57 0" xyz="0. 0 0"/>
+	</joint>
+	<link name="module_0">
+		<visual>
+			<origin rpy="0 0 0" xyz="0 0 0"/>
+			<geometry>
+				<mesh filename="package://model/RSnake/meshes/R8_16_link.stl" scale="0.001 0.001 0.001"/>
+			</geometry>
+		</visual>
+		<collision>
+			<origin rpy="0 1.57 0" xyz="0.118 0 0"/>
+			<geometry>
+				<cylinder length="0.1450" radius="0.05"/>
+			</geometry>
+		</collision>
+		<inertial>
+			<mass value="1.072"/>
+			<inertia ixx="0.0104" ixy="0.0" ixz="0.0" iyy="0.0104" iyz="0.0" izz="0.0104"/>
+		</inertial>
+	</link>
+
+	<joint name="module_0_to_1" type="revolute">
+		<parent link="module_0"/>
+		<child link="module_1"/>
+		<axis xyz="0 0 1"/>
+		<origin rpy="1.57 0 0" xyz="0.145 0 0"/>
+		<limit effort="16.0" lower="-1.57" upper="1.57" velocity="0.25"/>
+	</joint>
+
+	<link name="module_1">
+		<visual>
+			<origin rpy="0 0 0" xyz="0 0 0"/>
+			<geometry>
+				<mesh filename="package://model/RSnake/meshes/R8_16_link.stl" scale="0.001 0.001 0.001"/>
+			</geometry>
+		</visual>
+		<collision>
+			<origin rpy="0 1.57 0" xyz="0.118 0 0"/>
+			<geometry>
+				<cylinder length="0.1450" radius="0.05"/>
+			</geometry>
+		</collision>
+		<inertial>
+			<mass value="1.072"/>
+			<inertia ixx="0.0104" ixy="0.0" ixz="0.0" iyy="0.0104" iyz="0.0" izz="0.0104"/>
+		</inertial>
+	</link>
+
+	<joint name="module_1_to_2" type="revolute">
+		<parent link="module_1"/>
+		<child link="module_2"/>
+		<axis xyz="0 0 1"/>
+		<origin rpy="1.57 0 0" xyz="0.145 0 0"/>
+		<limit effort="16.0" lower="-1.57" upper="1.57" velocity="0.25"/>
+	</joint>
+
+	<link name="module_2">
+		<visual>
+			<origin rpy="0 0 0" xyz="0 0 0"/>
+			<geometry>
+				<mesh filename="package://model/RSnake/meshes/R8_16_link.stl" scale="0.001 0.001 0.001"/>
+			</geometry>
+		</visual>
+		<collision>
+			<origin rpy="0 1.57 0" xyz="0.118 0 0"/>
+			<geometry>
+				<cylinder length="0.1450" radius="0.05"/>
+			</geometry>
+		</collision>
+		<inertial>
+			<mass value="1.072"/>
+			<inertia ixx="0.0104" ixy="0.0" ixz="0.0" iyy="0.0104" iyz="0.0" izz="0.0104"/>
+		</inertial>
+	</link>
+
+	<joint name="module_2_to_3" type="revolute">
+		<parent link="module_2"/>
+		<child link="module_3"/>
+		<axis xyz="0 0 1"/>
+		<origin rpy="1.57 0 0" xyz="0.145 0 0"/>
+		<limit effort="16.0" lower="-1.57" upper="1.57" velocity="0.25"/>
+	</joint>
+
+	<link name="module_3">
+		<visual>
+			<origin rpy="0 0 0" xyz="0 0 0"/>
+			<geometry>
+				<mesh filename="package://model/RSnake/meshes/R8_16_link.stl" scale="0.001 0.001 0.001"/>
+			</geometry>
+		</visual>
+		<collision>
+			<origin rpy="0 1.57 0" xyz="0.118 0 0"/>
+			<geometry>
+				<cylinder length="0.1450" radius="0.05"/>
+			</geometry>
+		</collision>
+		<inertial>
+			<mass value="1.072"/>
+			<inertia ixx="0.0104" ixy="0.0" ixz="0.0" iyy="0.0104" iyz="0.0" izz="0.0104"/>
+		</inertial>
+	</link>
+
+	<joint name="module_3_to_4" type="revolute">
+		<parent link="module_3"/>
+		<child link="module_4"/>
+		<axis xyz="0 0 1"/>
+		<origin rpy="1.57 0 0" xyz="0.145 0 0"/>
+		<limit effort="16.0" lower="-1.57" upper="1.57" velocity="0.25"/>
+	</joint>
+
+	<link name="module_4">
+		<visual>
+			<origin rpy="0 0 0" xyz="0 0 0"/>
+			<geometry>
+				<mesh filename="package://model/RSnake/meshes/R8_16_link.stl" scale="0.001 0.001 0.001"/>
+			</geometry>
+		</visual>
+		<collision>
+			<origin rpy="0 1.57 0" xyz="0.118 0 0"/>
+			<geometry>
+				<cylinder length="0.1450" radius="0.05"/>
+			</geometry>
+		</collision>
+		<inertial>
+			<mass value="1.072"/>
+			<inertia ixx="0.0104" ixy="0.0" ixz="0.0" iyy="0.0104" iyz="0.0" izz="0.0104"/>
+		</inertial>
+	</link>
+
+	<joint name="module_4_to_5" type="revolute">
+		<parent link="module_4"/>
+		<child link="module_5"/>
+		<axis xyz="0 0 1"/>
+		<origin rpy="1.57 0 0" xyz="0.145 0 0"/>
+		<limit effort="16.0" lower="-1.57" upper="1.57" velocity="0.25"/>
+	</joint>
+
+	<link name="module_5">
+		<visual>
+			<origin rpy="0 0 0" xyz="0 0 0"/>
+			<geometry>
+				<mesh filename="package://model/RSnake/meshes/R8_16_link.stl" scale="0.001 0.001 0.001"/>
+			</geometry>
+		</visual>
+		<collision>
+			<origin rpy="0 1.57 0" xyz="0.118 0 0"/>
+			<geometry>
+				<cylinder length="0.1450" radius="0.05"/>
+			</geometry>
+		</collision>
+		<inertial>
+			<mass value="1.072"/>
+			<inertia ixx="0.0104" ixy="0.0" ixz="0.0" iyy="0.0104" iyz="0.0" izz="0.0104"/>
+		</inertial>
+	</link>
+
+	<joint name="module_5_to_6" type="revolute">
+		<parent link="module_5"/>
+		<child link="module_6"/>
+		<axis xyz="0 0 1"/>
+		<origin rpy="1.57 0 0" xyz="0.145 0 0"/>
+		<limit effort="16.0" lower="-1.57" upper="1.57" velocity="0.25"/>
+	</joint>
+
+	<link name="module_6">
+		<visual>
+			<origin rpy="0 0 0" xyz="0 0 0"/>
+			<geometry>
+				<mesh filename="package://model/RSnake/meshes/R8_16_link.stl" scale="0.001 0.001 0.001"/>
+			</geometry>
+		</visual>
+		<collision>
+			<origin rpy="0 1.57 0" xyz="0.118 0 0"/>
+			<geometry>
+				<cylinder length="0.1450" radius="0.05"/>
+			</geometry>
+		</collision>
+		<inertial>
+			<mass value="1.072"/>
+			<inertia ixx="0.0104" ixy="0.0" ixz="0.0" iyy="0.0104" iyz="0.0" izz="0.0104"/>
+		</inertial>
+	</link>
+
+	<joint name="module_6_to_7" type="revolute">
+		<parent link="module_6"/>
+		<child link="module_7"/>
+		<axis xyz="0 0 1"/>
+		<origin rpy="1.57 0 0" xyz="0.145 0 0"/>
+		<limit effort="16.0" lower="-1.57" upper="1.57" velocity="0.25"/>
+	</joint>
+
+	<link name="module_7">
+		<visual>
+			<origin rpy="0 0 0" xyz="0 0 0"/>
+			<geometry>
+				<mesh filename="package://model/RSnake/meshes/R8_16_link.stl" scale="0.001 0.001 0.001"/>
+			</geometry>
+		</visual>
+		<collision>
+			<origin rpy="0 1.57 0" xyz="0.118 0 0"/>
+			<geometry>
+				<cylinder length="0.1450" radius="0.05"/>
+			</geometry>
+		</collision>
+		<inertial>
+			<mass value="1.072"/>
+			<inertia ixx="0.0104" ixy="0.0" ixz="0.0" iyy="0.0104" iyz="0.0" izz="0.0104"/>
+		</inertial>
+	</link>
+
+	<joint name="module_7_to_8" type="revolute">
+		<parent link="module_7"/>
+		<child link="module_8"/>
+		<axis xyz="0 0 1"/>
+		<origin rpy="1.57 0 0" xyz="0.145 0 0"/>
+		<limit effort="16.0" lower="-1.57" upper="1.57" velocity="0.25"/>
+	</joint>
+
+	<link name="module_8">
+		<visual>
+			<origin rpy="0 0 0" xyz="0 0 0"/>
+			<geometry>
+				<mesh filename="package://model/RSnake/meshes/R8_16_link.stl" scale="0.001 0.001 0.001"/>
+			</geometry>
+		</visual>
+		<collision>
+			<origin rpy="0 1.57 0" xyz="0.118 0 0"/>
+			<geometry>
+				<cylinder length="0.1450" radius="0.05"/>
+			</geometry>
+		</collision>
+		<inertial>
+			<mass value="1.072"/>
+			<inertia ixx="0.0104" ixy="0.0" ixz="0.0" iyy="0.0104" iyz="0.0" izz="0.0104"/>
+		</inertial>
+	</link>
+
+	<joint name="module_8_to_9" type="revolute">
+		<parent link="module_8"/>
+		<child link="module_9"/>
+		<axis xyz="0 0 1"/>
+		<origin rpy="1.57 0 0" xyz="0.145 0 0"/>
+		<limit effort="16.0" lower="-1.57" upper="1.57" velocity="0.25"/>
+	</joint>
+
+	<link name="module_9">
+		<visual>
+			<origin rpy="0 0 0" xyz="0 0 0"/>
+			<geometry>
+				<mesh filename="package://model/RSnake/meshes/R8_16_link.stl" scale="0.001 0.001 0.001"/>
+			</geometry>
+		</visual>
+		<collision>
+			<origin rpy="0 1.57 0" xyz="0.118 0 0"/>
+			<geometry>
+				<cylinder length="0.1450" radius="0.05"/>
+			</geometry>
+		</collision>
+		<inertial>
+			<mass value="1.072"/>
+			<inertia ixx="0.0104" ixy="0.0" ixz="0.0" iyy="0.0104" iyz="0.0" izz="0.0104"/>
+		</inertial>
+	</link>
+
+	<joint name="module_9_to_10" type="revolute">
+		<parent link="module_9"/>
+		<child link="module_10"/>
+		<axis xyz="0 0 1"/>
+		<origin rpy="1.57 0 0" xyz="0.145 0 0"/>
+		<limit effort="16.0" lower="-1.57" upper="1.57" velocity="0.25"/>
+	</joint>
+
+	<link name="module_10">
+		<visual>
+			<origin rpy="0 0 0" xyz="0 0 0"/>
+			<geometry>
+				<mesh filename="package://model/RSnake/meshes/R8_16_link.stl" scale="0.001 0.001 0.001"/>
+			</geometry>
+		</visual>
+		<collision>
+			<origin rpy="0 1.57 0" xyz="0.118 0 0"/>
+			<geometry>
+				<cylinder length="0.1450" radius="0.05"/>
+			</geometry>
+		</collision>
+		<inertial>
+			<mass value="1.072"/>
+			<inertia ixx="0.0104" ixy="0.0" ixz="0.0" iyy="0.0104" iyz="0.0" izz="0.0104"/>
+		</inertial>
+	</link>
+
+	<joint name="module_10_to_11" type="revolute">
+		<parent link="module_10"/>
+		<child link="module_11"/>
+		<axis xyz="0 0 1"/>
+		<origin rpy="1.57 0 0" xyz="0.145 0 0"/>
+		<limit effort="16.0" lower="-1.57" upper="1.57" velocity="0.25"/>
+	</joint>
+
+	<link name="module_11">
+		<visual>
+			<origin rpy="0 0 0" xyz="0 0 0"/>
+			<geometry>
+				<mesh filename="package://model/RSnake/meshes/R8_16_link.stl" scale="0.001 0.001 0.001"/>
+			</geometry>
+		</visual>
+		<collision>
+			<origin rpy="0 1.57 0" xyz="0.118 0 0"/>
+			<geometry>
+				<cylinder length="0.1450" radius="0.05"/>
+			</geometry>
+		</collision>
+		<inertial>
+			<mass value="1.072"/>
+			<inertia ixx="0.0104" ixy="0.0" ixz="0.0" iyy="0.0104" iyz="0.0" izz="0.0104"/>
+		</inertial>
+	</link>
+
+	<joint name="module_11_to_12" type="revolute">
+		<parent link="module_11"/>
+		<child link="module_12"/>
+		<axis xyz="0 0 1"/>
+		<origin rpy="1.57 0 0" xyz="0.145 0 0"/>
+		<limit effort="16.0" lower="-1.57" upper="1.57" velocity="0.25"/>
+	</joint>
+
+	<link name="module_12">
+		<visual>
+			<origin rpy="0 0 0" xyz="0 0 0"/>
+			<geometry>
+				<mesh filename="package://model/RSnake/meshes/R8_16_link.stl" scale="0.001 0.001 0.001"/>
+			</geometry>
+		</visual>
+		<collision>
+			<origin rpy="0 1.57 0" xyz="0.118 0 0"/>
+			<geometry>
+				<cylinder length="0.1450" radius="0.05"/>
+			</geometry>
+		</collision>
+		<inertial>
+			<mass value="1.072"/>
+			<inertia ixx="0.0104" ixy="0.0" ixz="0.0" iyy="0.0104" iyz="0.0" izz="0.0104"/>
+		</inertial>
+	</link>
+
+	<joint name="module_12_to_13" type="revolute">
+		<parent link="module_12"/>
+		<child link="module_13"/>
+		<axis xyz="0 0 1"/>
+		<origin rpy="1.57 0 0" xyz="0.145 0 0"/>
+		<limit effort="16.0" lower="-1.57" upper="1.57" velocity="0.25"/>
+	</joint>
+
+	<link name="module_13">
+		<visual>
+			<origin rpy="0 0 0" xyz="0 0 0"/>
+			<geometry>
+				<mesh filename="package://model/RSnake/meshes/R8_16_link.stl" scale="0.001 0.001 0.001"/>
+			</geometry>
+		</visual>
+		<collision>
+			<origin rpy="0 1.57 0" xyz="0.118 0 0"/>
+			<geometry>
+				<cylinder length="0.1450" radius="0.05"/>
+			</geometry>
+		</collision>
+		<inertial>
+			<mass value="1.072"/>
+			<inertia ixx="0.0104" ixy="0.0" ixz="0.0" iyy="0.0104" iyz="0.0" izz="0.0104"/>
+		</inertial>
+	</link>
+
+	<joint name="module_13_to_14" type="revolute">
+		<parent link="module_13"/>
+		<child link="module_14"/>
+		<axis xyz="0 0 1"/>
+		<origin rpy="1.57 0 0" xyz="0.145 0 0"/>
+		<limit effort="16.0" lower="-1.57" upper="1.57" velocity="0.25"/>
+	</joint>
+
+	<link name="module_14">
+		<visual>
+			<origin rpy="0 0 0" xyz="0 0 0"/>
+			<geometry>
+				<mesh filename="package://model/RSnake/meshes/R8_16_link.stl" scale="0.001 0.001 0.001"/>
+			</geometry>
+		</visual>
+		<collision>
+			<origin rpy="0 1.57 0" xyz="0.118 0 0"/>
+			<geometry>
+				<cylinder length="0.1450" radius="0.05"/>
+			</geometry>
+		</collision>
+		<inertial>
+			<mass value="1.072"/>
+			<inertia ixx="0.0104" ixy="0.0" ixz="0.0" iyy="0.0104" iyz="0.0" izz="0.0104"/>
+		</inertial>
+	</link>
+</robot>
