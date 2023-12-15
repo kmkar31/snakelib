@@ -20,15 +20,16 @@ def load_terrain():
     p.loadURDF(terrainPath)
     terrainPath2 = rp.get_path("model") + "/terrain/plate2.urdf"
     p.loadURDF(terrainPath2)
+    '''
     terrainPath3 = rp.get_path("model") + "/terrain/plate3.urdf"
     p.loadURDF(terrainPath3)
     terrainPath4 = rp.get_path("model") + "/terrain/plate4.urdf"
     p.loadURDF(terrainPath4)
     terrainPath5 = rp.get_path("model") + "/terrain/plate5.urdf"
-    p.loadURDF(terrainPath5)
+    #p.loadURDF(terrainPath5)
     terrainPath3 = rp.get_path("model") + "/terrain/flat_plane15_15.urdf"
     #p.loadURDF(terrainPath3)
-    '''
+    #'''
     p.loadURDF("plane.urdf")
     '''
     for i in range(20):
@@ -99,7 +100,7 @@ def init_bullet():
     
     load_terrain()
     startPos = [0,0,0.1]
-    startOrientation = p.getQuaternionFromEuler([0,90,0])
+    startOrientation = p.getQuaternionFromEuler([90,0,0])
     rp = rospkg.RosPack()
     # Load Snake
     path = rp.get_path("model") + "/RSnake/RSnake.urdf"
@@ -130,6 +131,7 @@ def process_feedback(forcevec):
             torques[i] = torquevec[i,2] # Mz component
         else:
             torques[i] = torquevec[i,2]
+    print(torques)
     return torques
 
 # Initialize node

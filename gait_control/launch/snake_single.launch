@@ -1,5 +1,5 @@
 <launch>
-	<arg name="gait" default="stationary" />
+	<arg name="gait" default="stationary"/>
 	<arg name="snake" default="RSnake" />
    	<rosparam file="$(find param)/param/gait_param.yaml" />
 	<rosparam file="$(find param)/param/run_param.yaml" />

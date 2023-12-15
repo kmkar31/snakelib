@@ -22,7 +22,7 @@ def HebiExec(msg, args):
     jointCommand.position = sort_command(msg.Joint_Ang, sort_key)
     modules.send_command(jointCommand)
 
-def robotModuleOrder(filepath, commsOrder):
+def robotModuleOrder(moduleOrderFile, commsOrder):
     # Obtain the Order of modules on the physical snake
     file = open(moduleOrderFile, "r")
     moduleOrder = file.read().splitlines()[1:]

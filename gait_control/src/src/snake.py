@@ -174,7 +174,8 @@ class Snake():
         sigma_d_dot_new = np.zeros(self.N)
         sigma_d_ddot = np.zeros(self.N)
         #print(J,tau)
-        for i in range(0,self.N):
+        '''
+        for i in range(self.N):
             self.ShapeForce[i] = J[self.window_start[i]:self.window_end[i]+1,:].T@tau[self.window_start[i]:self.window_end[i]+1]
             sigma_d_ddot[i] = np.reshape((1/self.Mii)*(self.ShapeForce[i] - self.Kii*(sigma_d[i]-sigma_o) - self.Bii*(sigma_d_dot[i])),(-1))
             #print(sigma_d_ddot, i)
@@ -182,6 +183,14 @@ class Snake():
             sigma_d_new[i] = sigma_d[i] + sigma_d_dot_new[i]*self.dt
         #print(J[self.window_start[6]:self.window_end[6]+1,:].T, tau[self.window_start[6]:self.window_end[6]+1])
         print(sigma_o, sigma_d_new[6], sigma_d_dot_new[6], sigma_d_ddot[6], self.ShapeForce[6])
+        return [sigma_d_new, sigma_d_dot_new]
+        '''
+        for i,(s,e) in enumerate(zip(self.window_start, self.window_end)):
+            self.ShapeForce[s:e+1] = J[s:e+1,:].T@tau[s:e+1]
+            sigma_d_ddot[s:e+1] = (1/self.Mii)*(self.ShapeForce[s:e+1] - self.Kii*(np.subtract(sigma_d[s:e+1],sigma_o)) - self.Bii*np.reshape(sigma_d_dot[s:e+1],(-1,)))
+            sigma_d_dot_new[s:e+1] = sigma_d_dot[s:e+1] + self.dt*sigma_d_ddot[s:e+1]
+            sigma_d_new[s:e+1] = sigma_d[s:e+1] + sigma_d_dot_new[s:e+1]*self.dt
+        #print(sigma_o, sigma_d_new[6], sigma_d_dot_new[6], sigma_d_ddot[6], self.ShapeForce[6])
         return [sigma_d_new, sigma_d_dot_new]
     
     # Creates the start end end window lengths based on points where the serpenoid function is 0
@@ -214,10 +223,12 @@ class Snake():
             #tau_ext[i] = tau_ext[i]*pow(-1,np.floor((i+1)/2))
         #self.ShapeForce = J.T@tau_ext
         self.setActivationWindows()
+        #self.window_start = [0,0,0,0,4,4,4,4,8,8,8,8,12,12]
+        #self.window_end = [3,3,3,3,7,7,7,7,11,11,11,11,13,13]
         for param in self.CompliantParams:
             sigma_o = self.NominalShape[param] # Extracts the single parameter to comply
             [sigma_d, sigma_d_dot] = self.computeCompliance(sigma_o, self.DesiredShape[param], self.DesiredShapeRate[param], J, tau_ext)
-            #sigma_d = self.gaussian(sigma_d)
+            #igma_d = self.gaussian(sigma_d, sigma_o)
             #sigma_d = self.sigmoid(sigma_d)
             self.DesiredShape[param] = sigma_d
             self.DesiredShapeRate[param] = sigma_d_dot
@@ -228,10 +239,10 @@ class Snake():
                 Angles[i] = self.serpenoid((i+1),self.NominalShape["beta_even"],self.NominalShape["A_even"],
                                                         self.NominalShape["wS_even"],self.NominalShape["wT_even"],self.NominalShape["delta"],t)
             else:
-                #Angles[i] = self.serpenoid((i+1),self.NominalShape["beta_odd"],sigma_d[i],
-                                                        #self.NominalShape["wS_odd"],self.NominalShape["wT_odd"],0,t) # delta doesn't exist for the odd wave
-                Angles[i] = self.serpenoid((i+1),self.NominalShape["beta_odd"],self.NominalShape["A_odd"],sigma_d[i],
-                                                self.NominalShape["wT_odd"],0,t) # delta doesn't exist for the odd wave
+                Angles[i] = self.serpenoid((i+1),self.NominalShape["beta_odd"],sigma_d[i],
+                                                        self.NominalShape["wS_odd"],self.NominalShape["wT_odd"],0,t) # delta doesn't exist for the odd wave
+                #Angles[i] = self.serpenoid((i+1),self.NominalShape["beta_odd"],self.NominalShape["A_odd"],sigma_d[i],
+                                                #self.NominalShape["wT_odd"],0,t) # delta doesn't exist for the odd wave
         Angles = np.clip(Angles,-1.5*np.ones(self.N), 1.5*np.ones(self.N))
         self.JointAngles = Angles
         self.localLog(t)
@@ -239,7 +250,7 @@ class Snake():
 
     
     # Performs Gaussian Transition over the given vector
-    def gaussian(self, sigma_d):
+    def gaussian(self, sigma_d, sigma_o):
         sigma_d_corrected = np.zeros((self.N))
         '''
         for i in range(self.N):
@@ -256,20 +267,20 @@ class Snake():
         we = list(np.unique(self.window_end))
         mu = [np.floor(np.mean([ws[i],we[i]])) for i in range(len(ws))]
         psi = [we[i]-ws[i] for i in range(len(ws))]
-        print(mu, psi)
+        #print(mu, psi)
         for i in range(self.N):
-            sigma_d_corrected[i] = sum([sigma_d[ws[j]]*np.exp(-1*(i-mu[j])**2/psi[j]**2) for j in range(len(ws))])
-            print(sigma_d_corrected[i])
+            sigma_d_corrected[i] = sigma_o + sum([(sigma_d[ws[j]]-sigma_o)*np.exp(-(i-mu[j])**2/psi[j]**2) for j in range(len(ws))])
+            #print(sigma_d_corrected[i])
         return sigma_d_corrected
     
     def sigmoid(self, sigma_d):
         sigma_d_corrected = np.zeros(self.N)
         ws = list(np.unique(self.window_start))
         we = list(np.unique(self.window_end))
-        m = 1
+        m = 3
         print(ws, we, [(1/(1+np.exp(-m*(4-ws[j]))) + 1/(1+np.exp(m*(4-we[j]))) ) for j in range(len(ws))])
         for i in range(self.N):
-            sigma_d_corrected[i] = sum([sigma_d[ws[j]]*(1/(1+np.exp(-m*(i-ws[j]))) + 1/(1+np.exp(m*(i-we[j]))) - 1) for j in range(len(ws))])
+            sigma_d_corrected[i] = sum([sigma_d[ws[j]]*(1/(1+np.exp(-m*(i-ws[j]))) + 1/(1+np.exp(m*(i-we[j])))) for j in range(len(ws))])
         return sigma_d_corrected
 
     

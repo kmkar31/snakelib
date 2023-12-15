@@ -25,7 +25,7 @@ def process_feedback(feedback, args):
     pub = args[0]
     snake = args[1]
     t = (rospy.Time.now() - args[2]).to_sec()
-
+    print(list(feedback.Force))
     angles = snake.update(t,feedback.Force)
     msg = JointCmd()
     msg.cmd_name = "Joint Angle SET"
