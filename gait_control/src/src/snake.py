@@ -122,6 +122,7 @@ class Snake():
         #for i in range(len(tau_ext)):
             #tau_ext[i] = tau_ext[i]*pow(-1,np.floor((i+1)/2))
         self.ShapeForce = J.T@tau_ext
+        print(self.ShapeForce)
         if np.abs(self.ShapeForce) <= 1.5:
             self.ShapeForce = [[0]]
 
@@ -154,8 +155,8 @@ class Snake():
     def localizedComplianceINIT(self):
         self.WindowStart = [] # Activation Window start and end locations
         self.WindowEnd = []
-        self.W = 16 # Number of Windows, Reassigned when window locations are populated
-        self.m = 3 # Controls Transition width
+        self.W = self.N # Number of Windows, Reassigned when window locations are populated
+        self.m = 100 # Controls Transition width
         self.Mii = rospy.get_param("/M_ii")
         self.Bii = rospy.get_param("/B_ii")
         self.Kii = rospy.get_param("/K_ii")
@@ -173,24 +174,26 @@ class Snake():
         sigma_d_new = np.zeros(self.N)
         sigma_d_dot_new = np.zeros(self.N)
         sigma_d_ddot = np.zeros(self.N)
-        #print(J,tau)
-        '''
         for i in range(self.N):
-            self.ShapeForce[i] = J[self.window_start[i]:self.window_end[i]+1,:].T@tau[self.window_start[i]:self.window_end[i]+1]
-            sigma_d_ddot[i] = np.reshape((1/self.Mii)*(self.ShapeForce[i] - self.Kii*(sigma_d[i]-sigma_o) - self.Bii*(sigma_d_dot[i])),(-1))
-            #print(sigma_d_ddot, i)
-            sigma_d_dot_new[i] = sigma_d_dot[i] + self.dt*sigma_d_ddot[i]
-            sigma_d_new[i] = sigma_d[i] + sigma_d_dot_new[i]*self.dt
-        #print(J[self.window_start[6]:self.window_end[6]+1,:].T, tau[self.window_start[6]:self.window_end[6]+1])
-        print(sigma_o, sigma_d_new[6], sigma_d_dot_new[6], sigma_d_ddot[6], self.ShapeForce[6])
-        return [sigma_d_new, sigma_d_dot_new]
-        '''
+            if np.abs(tau[i]) <= 2.5:
+                tau[i] = 0
+        
         for i,(s,e) in enumerate(zip(self.window_start, self.window_end)):
-            self.ShapeForce[s:e+1] = J[s:e+1,:].T@tau[s:e+1]
-            sigma_d_ddot[s:e+1] = (1/self.Mii)*(self.ShapeForce[s:e+1] - self.Kii*(np.subtract(sigma_d[s:e+1],sigma_o)) - self.Bii*np.reshape(sigma_d_dot[s:e+1],(-1,)))
+            Jactive = J[s:e+1,:]
+            self.ShapeForce[s:e+1] = Jactive.T@tau[s:e+1]
+            #print(self.ShapeForce[s:e+1])
+            Md = self.Mii*Jactive.T@np.identity(e-s+1)@Jactive
+            Bd = self.Bii*Jactive.T@np.identity(e-s+1)@Jactive
+            Kd = self.Kii*Jactive.T@np.identity(e-s+1)@Jactive
+
+            stiffness = Kd*(np.reshape(np.subtract(sigma_d[s:e+1],sigma_o),(-1,1)))
+            damping = Bd*np.reshape(sigma_d_dot[s:e+1],(-1,1))
+            forcing = np.reshape(self.ShapeForce[s:e+1], (-1,1))
+
+            sigma_d_ddot[s:e+1] = np.reshape(np.linalg.pinv(Md)*(forcing - stiffness - damping), (-1))
             sigma_d_dot_new[s:e+1] = sigma_d_dot[s:e+1] + self.dt*sigma_d_ddot[s:e+1]
             sigma_d_new[s:e+1] = sigma_d[s:e+1] + sigma_d_dot_new[s:e+1]*self.dt
-        #print(sigma_o, sigma_d_new[6], sigma_d_dot_new[6], sigma_d_ddot[6], self.ShapeForce[6])
+
         return [sigma_d_new, sigma_d_dot_new]
     
     # Creates the start end end window lengths based on points where the serpenoid function is 0
@@ -198,18 +201,18 @@ class Snake():
         # ID depicts if the parameter is an odd parameter or an even parameter
         window_start = np.zeros((self.N),dtype=int)
         window_end = np.zeros((self.N), dtype=int)
-        for i in range(2,self.N):
+        for i in range(2,self.N-1):
             # CHANGED HERE FOR ODD PARAMETER
             if (i+1)%2==0 and (np.sign(self.JointAngles[i]) == -np.sign(self.JointAngles[i-2]) or np.abs(self.JointAngles[i])<=0.002): # Zero Serpenoid Equation module
                 window_start[i] = i
-                window_end[np.where(window_end==0)[0][0]:i] = i-1
+                window_end[np.where(window_end==0)[0][0]:i] = i
             else:
                 window_start[i] = window_start[i-1]
         window_end[np.where(window_end==0)[0][0]:self.N] = self.N-1
+        window_start[self.N-1] = window_start[self.N-2]
 
         self.window_start = window_start
         self.window_end = window_end
-        #print(window_start, window_end)
     
     # Populates the 
     def localizedCompliance(self, tau_ext, t):
@@ -219,21 +222,23 @@ class Snake():
         CompliantIndices = [self.ShapeParams.index(self.CompliantParams[i]) for i in range(len(self.CompliantParams))]
         J = J[:,CompliantIndices]
         tau_ext = -np.reshape(np.array(tau_ext),(-1,1))
+
+        # VARIES WITH DIFFERENT SNAKES. SOME HAVE THE Z-AXIS INVERTED AND SOME DONT
         #for i in range(len(tau_ext)):
             #tau_ext[i] = tau_ext[i]*pow(-1,np.floor((i+1)/2))
         #self.ShapeForce = J.T@tau_ext
+
         self.setActivationWindows()
-        #self.window_start = [0,0,0,0,4,4,4,4,8,8,8,8,12,12]
-        #self.window_end = [3,3,3,3,7,7,7,7,11,11,11,11,13,13]
+        #self.window_start = [0,0,0,0,4,4,4,4,8,8,8,8,12,12,12,12]
+        #self.window_end = [3,3,3,3,7,7,7,7,11,11,11,11,15,15,15,15]
         for param in self.CompliantParams:
             sigma_o = self.NominalShape[param] # Extracts the single parameter to comply
             [sigma_d, sigma_d_dot] = self.computeCompliance(sigma_o, self.DesiredShape[param], self.DesiredShapeRate[param], J, tau_ext)
             #igma_d = self.gaussian(sigma_d, sigma_o)
-            #sigma_d = self.sigmoid(sigma_d)
+            sigma_d = self.sigmoid(sigma_d)
             self.DesiredShape[param] = sigma_d
             self.DesiredShapeRate[param] = sigma_d_dot
-            #print(sigma_d)
-            #print(ParamVec)
+           
         for i in range(self.N):
             if (i+1)%2==0 : # Even Joint
                 Angles[i] = self.serpenoid((i+1),self.NominalShape["beta_even"],self.NominalShape["A_even"],
@@ -241,8 +246,6 @@ class Snake():
             else:
                 Angles[i] = self.serpenoid((i+1),self.NominalShape["beta_odd"],sigma_d[i],
                                                         self.NominalShape["wS_odd"],self.NominalShape["wT_odd"],0,t) # delta doesn't exist for the odd wave
-                #Angles[i] = self.serpenoid((i+1),self.NominalShape["beta_odd"],self.NominalShape["A_odd"],sigma_d[i],
-                                                #self.NominalShape["wT_odd"],0,t) # delta doesn't exist for the odd wave
         Angles = np.clip(Angles,-1.5*np.ones(self.N), 1.5*np.ones(self.N))
         self.JointAngles = Angles
         self.localLog(t)
@@ -252,35 +255,26 @@ class Snake():
     # Performs Gaussian Transition over the given vector
     def gaussian(self, sigma_d, sigma_o):
         sigma_d_corrected = np.zeros((self.N))
-        '''
-        for i in range(self.N):
-            ws = self.window_start[i]
-            we = self.window_end[i]
-            mu = np.floor((ws+we)/2)
-            psi = (we-ws)
-            sigma_d_corrected[i] = sigma_d[i]*np.exp(-0.5*(i-mu)**2/psi**2)
-            #if i==6:
-                #print(i,mu,psi,sigma_d[i],sigma_d_corrected[i])
-        '''
         ws = list(np.unique(self.window_start))
-        #print(self.window_start)
         we = list(np.unique(self.window_end))
         mu = [np.floor(np.mean([ws[i],we[i]])) for i in range(len(ws))]
         psi = [we[i]-ws[i] for i in range(len(ws))]
-        #print(mu, psi)
+
         for i in range(self.N):
             sigma_d_corrected[i] = sigma_o + sum([(sigma_d[ws[j]]-sigma_o)*np.exp(-(i-mu[j])**2/psi[j]**2) for j in range(len(ws))])
-            #print(sigma_d_corrected[i])
         return sigma_d_corrected
     
     def sigmoid(self, sigma_d):
         sigma_d_corrected = np.zeros(self.N)
         ws = list(np.unique(self.window_start))
         we = list(np.unique(self.window_end))
-        m = 3
-        print(ws, we, [(1/(1+np.exp(-m*(4-ws[j]))) + 1/(1+np.exp(m*(4-we[j]))) ) for j in range(len(ws))])
+        
         for i in range(self.N):
-            sigma_d_corrected[i] = sum([sigma_d[ws[j]]*(1/(1+np.exp(-m*(i-ws[j]))) + 1/(1+np.exp(m*(i-we[j])))) for j in range(len(ws))])
+            if i != 0 and i!=self.N-1:
+                sigma_d_corrected[i] = sum([sigma_d[ws[j]]*(1/(1+np.exp(-self.m*(i-ws[j]))) + 1/(1+np.exp(self.m*(i-we[j]))) - 1) for j in range(len(ws))])
+                #print(i,sigma_d_corrected[i], sigma_d[i], [np.round((1/(1+np.exp(-m*(i-ws[j]))) + 1/(1+np.exp(m*(i-we[j]))) - 1),2)for j in range(len(ws))])
+            else:
+                sigma_d_corrected[i] = sigma_d[i]
         return sigma_d_corrected
 
     
@@ -300,7 +294,7 @@ class Snake():
         '''
         f.write(str(t) + ",")
         for key in self.NominalShape:
-            if key=='beta_odd':
+            if key=='A_odd':
                 nom = self.NominalShape[key]
                 f.write(str(nom)+ ",") 
                 des = list(self.DesiredShape[key])
@@ -356,7 +350,7 @@ class Snake():
             J[i,1] = ((i+1)%2==0)*compliant_params["A_even"]*(self.NominalShape["A_even"]!=0)*self.serpenoid((i+1),0,1,self.NominalShape["wS_even"],
                                                                                         self.NominalShape["wT_even"],self.NominalShape["delta"],t)
             
-            J[i,2] = ((i+1)%2!=0)*(self.N-(i+1))*compliant_params["wS_odd"]*(self.NominalShape["wS_odd"]!=0)*self.serpenoid((i+1),0,self.NominalShape["A_odd"],
+            J[i,2] = ((i+1)%2!=0)*(i+1)*compliant_params["wS_odd"]*(self.NominalShape["wS_odd"]!=0)*self.serpenoid((i+1),0,self.NominalShape["A_odd"],
                                                                     self.NominalShape["wS_odd"],self.NominalShape["wT_odd"],np.pi/2,t) # add pi/2 to convert sin to cos
             
             J[i,3] = ((i+1)%2==0)*(i+1)*compliant_params["wS_even"]*(self.NominalShape["wS_even"]!=0)*self.serpenoid((i+1),0,self.NominalShape["A_even"],self.NominalShape["wS_even"],

@@ -1,7 +1,7 @@
 # Compound Serpenoid Gait Parameters
 
-N: 14
-Max_Torque: 16 #Nm
+N: 16
+Max_Torque: 7 #Nm
 # gait name followed by individual parameter names
 stationary:
         beta_even: 0.0
@@ -15,23 +15,23 @@ stationary:
         delta: 0
 linear_progression:
         beta_even: 0.0
-        beta_odd: 0.3
-        A_even: 0.6
+        beta_odd: 0.25
+        A_even: 0.9
         A_odd: 0.0
         wS_even: 0.78539816339 #pi/4
         wS_odd: 0.78539816339 #pi/4
-        wT_even: 1.2
+        wT_even: 5.3
         wT_odd: 1.2
         delta: 0
 lateral_undulation:
         beta_even: 0.0
         beta_odd: 0.0
         A_even: 0.0
-        A_odd: 0.9
+        A_odd: 0.6
         wS_even: 0.78539816339 #pi/4 rad
         wS_odd: 0.78539816339 #pi/4 rad
         wT_even: 2.0
-        wT_odd: 2.0
+        wT_odd: -1.0
         delta: 0
 sidewinding:
         beta_even: 0.0
@@ -83,4 +83,14 @@ reversal_turning:
         wT_even: -1
         wT_odd: -1
         delta: 4.7123 #pi/2
+slithering:
+        beta_even: 0.0
+        beta_odd: 0.0
+        A_even: 0.8
+        A_odd: 0.4
+        wS_even: 0.78539816339 #pi/4
+        wS_odd: 0.52359877559 #pi/6
+        wT_even: 9
+        wT_odd: 4.5
+        delta: 0
 

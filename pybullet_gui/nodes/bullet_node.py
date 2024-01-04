@@ -78,7 +78,7 @@ def callback(msg,args):
         Positions[i] = jointStates[i][0]
         Velocities[i] = jointStates[i][1]
         #print(jointStates[i][2][3:])
-        Torques[i] = jointStates[i][2][5]
+        Torques[i] = jointStates[i][2][5] # FOR RSNAKE - THIS IS INDEX 3 or 4 because axis systems are wrong on CAD
         AppTorques[i] = jointStates[i][3]
     #print("Applied Torque",np.linalg.norm(AppTorques))
    
@@ -86,6 +86,7 @@ def callback(msg,args):
     pub_msg.Position = Positions
     pub_msg.Velocity = Velocities
     pub_msg.header = Header(stamp=rospy.Time.now(),frame_id="state")
+    print(*Torques, sep=',')
     try:
         state_pub.publish(pub_msg)
     except:
@@ -100,10 +101,11 @@ def init_bullet():
     
     load_terrain()
     startPos = [0,0,0.1]
-    startOrientation = p.getQuaternionFromEuler([90,0,0])
+    startOrientation = p.getQuaternionFromEuler([0,90,0])
     rp = rospkg.RosPack()
     # Load Snake
-    path = rp.get_path("model") + "/RSnake/RSnake.urdf"
+    snake_type = rospy.get_param('/snake_type')
+    path = rp.get_path("model") + "/" + snake_type + "/" + snake_type + ".urdf"
     snake_Id = p.loadURDF(path,startPos, startOrientation)
     joint_idx = parse_joint_info(snake_Id)
     print("Snake Robot Loaded")
@@ -127,11 +129,8 @@ def process_feedback(forcevec):
     torques = np.zeros((N,1))
     torquevec = forcevec[:,3:]
     for i in range(N):
-        if (i+1)%2 != 0: # Odd joint
-            torques[i] = torquevec[i,2] # Mz component
-        else:
-            torques[i] = torquevec[i,2]
-    print(torques)
+        torques[i] = torquevec[i,2] # Mz component
+    print(','.join(str(torques)))
     return torques
 
 # Initialize node
