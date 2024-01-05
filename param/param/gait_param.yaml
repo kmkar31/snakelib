@@ -1,13 +1,13 @@
 # Compound Serpenoid Gait Parameters
 
-N: 16
-Max_Torque: 7 #Nm
+N: 14
+Max_Torque: 16 #Nm
 # gait name followed by individual parameter names
 stationary:
         beta_even: 0.0
-        beta_odd: 0.0
-        A_even: 0.0
-        A_odd: 0.9
+        beta_odd: 0.3
+        A_even: 0.9
+        A_odd: 0.0
         wS_even: 0.78539816339
         wS_odd: 0.78539816339
         wT_even: 0.0

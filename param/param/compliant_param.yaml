@@ -1,4 +1,4 @@
-control_mode: 0
+control_mode: 2
 global_comply:
           A_odd : 1
           A_even : 0
@@ -12,7 +12,7 @@ global_comply:
 
 local_comply: 
           A_odd : 1
-          A_even : 0
+          A_even : 1
           wS_odd : 0
           wS_even : 0
           wT_odd : 0
@@ -21,7 +21,7 @@ local_comply:
           beta_even : 0
           delta : 0
 
-M_ii: 0.15
-B_ii: 1
-K_ii : 1
+M_ii: 0.75
+B_ii: 3
+K_ii : 3
                 

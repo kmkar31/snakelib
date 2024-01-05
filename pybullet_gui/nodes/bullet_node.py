@@ -86,7 +86,7 @@ def callback(msg,args):
     pub_msg.Position = Positions
     pub_msg.Velocity = Velocities
     pub_msg.header = Header(stamp=rospy.Time.now(),frame_id="state")
-    print(*Torques, sep=',')
+    #print(*Torques, sep=',')
     try:
         state_pub.publish(pub_msg)
     except:
