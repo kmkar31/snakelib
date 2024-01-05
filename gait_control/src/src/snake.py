@@ -52,7 +52,7 @@ class Snake():
     def serpenoid(self,n,beta,A,wS,wT,delta,t): # Calculates the array of angles taken by
         #print(n,beta,A,wS,wT,delta,t)
         if self.GaitType == 'differential_turning' and (n%2):
-            angle = (beta + A*n*np.sin(wS*(self.N - n) + self.Invert*wT*t + delta))*pow(-1,np.floor(n/2))
+            angle = (beta + A*n*np.sin(wS*n + self.Invert*wT*t + delta))*pow(-1,np.floor(n/2))
         else:
             angle = (beta + A*np.sin(wS*n + self.Invert*wT*t + delta))*pow(-1,np.floor(n/2))
         return angle
@@ -174,8 +174,12 @@ class Snake():
         sigma_d_dot_new = np.zeros(self.N)
         sigma_d_ddot = np.zeros(self.N)
         for i in range(self.N):
-            if np.abs(tau[i]) <= 2.5:
+            if np.abs(tau[i]) <= 10:
                 tau[i] = 0
+            elif tau[i] > 10:
+                tau[i] = tau[i] - 10
+            else:
+                tau[i] = tau[i] + 10 
         
         for i,(s,e) in enumerate(zip(self.WindowStart, self.WindowEnd)):
             Jactive = J[s:e+1,:]
@@ -193,6 +197,8 @@ class Snake():
             sigma_d_dot_new[s:e+1] = sigma_d_dot[s:e+1] + self.dt*sigma_d_ddot[s:e+1]
             sigma_d_new[s:e+1] = sigma_d[s:e+1] + sigma_d_dot_new[s:e+1]*self.dt
 
+            #print(self.ShapeForce)
+
         return [sigma_d_new, sigma_d_dot_new]
     
     # Creates the start end end window lengths based on points where the serpenoid function is 0
@@ -201,14 +207,14 @@ class Snake():
         WindowStart = np.zeros((self.N),dtype=int)
         WindowEnd = np.zeros((self.N), dtype=int)
         for i in range(1,self.N-1):
-            if ID == 1 : # ODD PARAMETER
-                if (i+1)%2==0 and (np.sign(self.JointAngles[i]) == -np.sign(self.JointAngles[i-2]) or np.abs(self.JointAngles[i])<=0.002): # Zero Serpenoid Equation module
+            if ID == 1: # ODD PARAMETER
+                if i%2==0 and (np.sign(self.JointAngles[i]) == -np.sign(self.JointAngles[i-2]) or np.abs(self.JointAngles[i])<=0.002): # Zero Serpenoid Equation module
                     WindowStart[i] = i
                     WindowEnd[np.where(WindowEnd==0)[0][0]:i] = i
                 else:
                     WindowStart[i] = WindowStart[i-1]
             elif ID == 2:
-                if i%2==0 and (np.sign(self.JointAngles[i]) == -np.sign(self.JointAngles[i-2]) or np.abs(self.JointAngles[i])<=0.002): # Zero Serpenoid Equation module
+                if (i+1)%2==0 and (np.sign(self.JointAngles[i]) == -np.sign(self.JointAngles[i-2]) or np.abs(self.JointAngles[i])<=0.002): # Zero Serpenoid Equation module
                     WindowStart[i] = i
                     WindowEnd[np.where(WindowEnd==0)[0][0]:i] = i
                 else:
@@ -219,16 +225,14 @@ class Snake():
         self.WindowStart = WindowStart
         self.WindowEnd = WindowEnd
     
-    # Populates the 
     def localizedCompliance(self, tau_ext, t):
         # param is a string that represents the key in the dictionary
         J = self.Jacobian(t,rospy.get_param('/local_comply'))
         tau_ext = -np.reshape(np.array(tau_ext),(-1,1))
 
         # VARIES WITH DIFFERENT SNAKES. SOME HAVE THE Z-AXIS INVERTED AND SOME DONT
-        #for i in range(len(tau_ext)):
-            #tau_ext[i] = tau_ext[i]*pow(-1,np.floor((i+1)/2))
-        #self.ShapeForce = J.T@tau_ext
+        for i in range(len(tau_ext)):
+            tau_ext[i] = tau_ext[i]*pow(-1,np.floor((i+1)/2))
 
         #self.WindowStart = [0,0,0,0,4,4,4,4,8,8,8,8,12,12,12,12]
         #self.WindowEnd = [3,3,3,3,7,7,7,7,11,11,11,11,15,15,15,15]
@@ -238,20 +242,20 @@ class Snake():
             else:
                 ID = 2
             self.setActivationWindows(ID)
+            #print(self.WindowStart, self.WindowEnd)
             Jactive = np.reshape(J[:,self.ShapeParams.index(param)], (-1,1))
             sigma_o = self.NominalShape[param] # Extracts the single parameter to comply
             [sigma_d, sigma_d_dot] = self.computeCompliance(sigma_o, self.DesiredShape[param], self.DesiredShapeRate[param], Jactive, tau_ext)
-            #igma_d = self.gaussian(sigma_d, sigma_o)
-            sigma_d = self.sigmoid(sigma_d)
+            #sigma_d = self.gaussian(sigma_d, sigma_o)
+            sigma_d = self.sigmoid(sigma_d, sigma_o)
             self.DesiredShape[param] = sigma_d
             self.DesiredShapeRate[param] = sigma_d_dot
            
         self.localSerpenoid(t)
         self.localLog(t)
-
+        print(self.DesiredShape['A_even'])
         return self.JointAngles
 
-    
     # Performs Gaussian Transition over the given vector
     def gaussian(self, sigma_d, sigma_o):
         sigma_d_corrected = np.zeros((self.N))
@@ -264,7 +268,7 @@ class Snake():
             sigma_d_corrected[i] = sigma_o + sum([(sigma_d[ws[j]]-sigma_o)*np.exp(-(i-mu[j])**2/psi[j]**2) for j in range(len(ws))])
         return sigma_d_corrected
     
-    def sigmoid(self, sigma_d):
+    def sigmoid(self, sigma_d, sigma_o):
         sigma_d_corrected = np.zeros(self.N)
         ws = list(np.unique(self.WindowStart))
         we = list(np.unique(self.WindowEnd))
@@ -272,9 +276,8 @@ class Snake():
         for i in range(self.N):
             if i != 0 and i!=self.N-1:
                 sigma_d_corrected[i] = sum([sigma_d[ws[j]]*(1/(1+np.exp(-self.m*(i-ws[j]))) + 1/(1+np.exp(self.m*(i-we[j]))) - 1) for j in range(len(ws))])
-                #print(i,sigma_d_corrected[i], sigma_d[i], [np.round((1/(1+np.exp(-m*(i-ws[j]))) + 1/(1+np.exp(m*(i-we[j]))) - 1),2)for j in range(len(ws))])
             else:
-                sigma_d_corrected[i] = sigma_d[i]
+                sigma_d_corrected[i] = sigma_o
         return sigma_d_corrected
 
     

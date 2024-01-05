@@ -1,6 +1,6 @@
 <launch>
-	<arg name="gait" default="slithering"/>
-	<arg name="snake" default="ReU" />
+	<arg name="gait" default="linear_progression"/>
+	<arg name="snake" default="RSnake" />
    	<rosparam file="$(find param)/param/gait_param.yaml" />
 	<rosparam file="$(find param)/param/run_param.yaml" />
 	<rosparam file="$(find param)/param/compliant_param.yaml" />
