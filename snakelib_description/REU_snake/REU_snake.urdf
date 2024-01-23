@@ -1,0 +1,1372 @@
+<?xml version="1.0" ?>
+<robot name="REU_snake" xmlns:xacro="http://ros.org/wiki/xacro">
+  <!-- Written by Christian Luu (vluu@andrew.cmu.edu) 2021 -->
+  <!-- URDF uses a cylindrical collision model -->
+  <!-- Inertial Matrix of ReU module is from MeshLab -->
+  <link name="kdl_dummy_root"/>
+  <joint name="kdl_dummy_root_to_dummy_head" type="fixed">
+    <parent link="kdl_dummy_root"/>
+    <child link="reu_module_in_0"/>
+    <origin rpy="0 -1.57079632679 0" xyz="0 0 0.026"/>
+  </joint>
+  <link name="reu_module_in_0">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.02" radius="0.006"/>
+      </geometry>
+      <material name="red">
+        <color rgba="1 0 0 1"/>
+      </material>
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="1"/>
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+    </inertial>
+  </link>
+  <link name="reu_module_body_0">
+    <visual>
+      <origin rpy="0 0 0" xyz="-0.02539 -0.02539 -0.9"/>
+      <geometry>
+        <mesh filename="package://snakelib_description/REU_snake/meshes/ReU.STL" scale="0.0254 0.0254 0.0254"/>
+      </geometry>
+      <material name="green_dark">
+        <color rgba="0 0.6 0 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.0208325" radius="0.02539"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0.103"/>
+      <inertia ixx="2.948" ixy="0.0452" ixz="0.4092" iyy="2.9305" iyz="-0.405" izz="1.819"/>
+    </inertial>
+  </link>
+  <link name="reu_module_out_0">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.015" radius="0.006"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0 0 1 1"/>
+      </material>
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0"/>
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+    </inertial>
+  </link>
+  <joint name="reu_joint_in2body_0" type="fixed">
+    <parent link="reu_module_in_0"/>
+    <child link="reu_module_body_0"/>
+    <origin rpy="1.57076327 0 0" xyz="0 -0.0066 0"/>
+  </joint>
+  <joint name="reu_joint_body2out_0" type="fixed">
+    <parent link="reu_module_body_0"/>
+    <child link="reu_module_out_0"/>
+    <origin rpy="0 1.57076327 0" xyz="0 0 0.044"/>
+  </joint>
+  <joint name="reu_joint_out2in_0" type="revolute">
+    <parent link="reu_module_out_0"/>
+    <child link="reu_module_in_1"/>
+    <axis xyz="0 0 1"/>
+    <origin rpy="0 3.14152654 -1.57076327" xyz="0 0 0"/>
+    <dynamics damping="0.1" friction="0.2"/>
+    <limit effort="7.0" lower="-1.57076327" upper="1.57076327" velocity="2.2"/>
+  </joint>
+  <transmission name="module_2_module_trans_0">
+    <type>transmission_interface/SimpleTranmission</type>
+    <actuator name="module_actuator_0">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="reu_joint_out2in_0">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+    </joint>
+  </transmission>
+  <link name="reu_module_in_1">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.02" radius="0.006"/>
+      </geometry>
+      <material name="red">
+        <color rgba="1 0 0 1"/>
+      </material>
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="1"/>
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+    </inertial>
+  </link>
+  <link name="reu_module_body_1">
+    <visual>
+      <origin rpy="0 0 0" xyz="-0.02539 -0.02539 -0.9"/>
+      <geometry>
+        <mesh filename="package://snakelib_description/REU_snake/meshes/ReU.STL" scale="0.0254 0.0254 0.0254"/>
+      </geometry>
+      <material name="green_light">
+        <color rgba="0 0.4 0 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.0208325" radius="0.02539"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0.103"/>
+      <inertia ixx="2.948" ixy="0.0452" ixz="0.4092" iyy="2.9305" iyz="-0.405" izz="1.819"/>
+    </inertial>
+  </link>
+  <link name="reu_module_out_1">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.015" radius="0.006"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0 0 1 1"/>
+      </material>
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0"/>
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+    </inertial>
+  </link>
+  <joint name="reu_joint_in2body_1" type="fixed">
+    <parent link="reu_module_in_1"/>
+    <child link="reu_module_body_1"/>
+    <origin rpy="1.57076327 0 0" xyz="0 -0.0066 0"/>
+  </joint>
+  <joint name="reu_joint_body2out_1" type="fixed">
+    <parent link="reu_module_body_1"/>
+    <child link="reu_module_out_1"/>
+    <origin rpy="0 1.57076327 0" xyz="0 0 0.044"/>
+  </joint>
+  <joint name="reu_joint_out2in_1" type="revolute">
+    <parent link="reu_module_out_1"/>
+    <child link="reu_module_in_2"/>
+    <axis xyz="0 0 1"/>
+    <origin rpy="0 3.14152654 -1.57076327" xyz="0 0 0"/>
+    <dynamics damping="0.1" friction="0.2"/>
+    <limit effort="7.0" lower="-1.57076327" upper="1.57076327" velocity="2.2"/>
+  </joint>
+  <transmission name="module_2_module_trans_1">
+    <type>transmission_interface/SimpleTranmission</type>
+    <actuator name="module_actuator_1">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="reu_joint_out2in_1">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+    </joint>
+  </transmission>
+  <link name="reu_module_in_2">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.02" radius="0.006"/>
+      </geometry>
+      <material name="red">
+        <color rgba="1 0 0 1"/>
+      </material>
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="1"/>
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+    </inertial>
+  </link>
+  <link name="reu_module_body_2">
+    <visual>
+      <origin rpy="0 0 0" xyz="-0.02539 -0.02539 -0.9"/>
+      <geometry>
+        <mesh filename="package://snakelib_description/REU_snake/meshes/ReU.STL" scale="0.0254 0.0254 0.0254"/>
+      </geometry>
+      <material name="green_dark">
+        <color rgba="0 0.6 0 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.0208325" radius="0.02539"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0.103"/>
+      <inertia ixx="2.948" ixy="0.0452" ixz="0.4092" iyy="2.9305" iyz="-0.405" izz="1.819"/>
+    </inertial>
+  </link>
+  <link name="reu_module_out_2">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.015" radius="0.006"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0 0 1 1"/>
+      </material>
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0"/>
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+    </inertial>
+  </link>
+  <joint name="reu_joint_in2body_2" type="fixed">
+    <parent link="reu_module_in_2"/>
+    <child link="reu_module_body_2"/>
+    <origin rpy="1.57076327 0 0" xyz="0 -0.0066 0"/>
+  </joint>
+  <joint name="reu_joint_body2out_2" type="fixed">
+    <parent link="reu_module_body_2"/>
+    <child link="reu_module_out_2"/>
+    <origin rpy="0 1.57076327 0" xyz="0 0 0.044"/>
+  </joint>
+  <joint name="reu_joint_out2in_2" type="revolute">
+    <parent link="reu_module_out_2"/>
+    <child link="reu_module_in_3"/>
+    <axis xyz="0 0 1"/>
+    <origin rpy="0 3.14152654 -1.57076327" xyz="0 0 0"/>
+    <dynamics damping="0.1" friction="0.2"/>
+    <limit effort="7.0" lower="-1.57076327" upper="1.57076327" velocity="2.2"/>
+  </joint>
+  <transmission name="module_2_module_trans_2">
+    <type>transmission_interface/SimpleTranmission</type>
+    <actuator name="module_actuator_2">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="reu_joint_out2in_2">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+    </joint>
+  </transmission>
+  <link name="reu_module_in_3">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.02" radius="0.006"/>
+      </geometry>
+      <material name="red">
+        <color rgba="1 0 0 1"/>
+      </material>
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="1"/>
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+    </inertial>
+  </link>
+  <link name="reu_module_body_3">
+    <visual>
+      <origin rpy="0 0 0" xyz="-0.02539 -0.02539 -0.9"/>
+      <geometry>
+        <mesh filename="package://snakelib_description/REU_snake/meshes/ReU.STL" scale="0.0254 0.0254 0.0254"/>
+      </geometry>
+      <material name="green_light">
+        <color rgba="0 0.4 0 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.0208325" radius="0.02539"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0.103"/>
+      <inertia ixx="2.948" ixy="0.0452" ixz="0.4092" iyy="2.9305" iyz="-0.405" izz="1.819"/>
+    </inertial>
+  </link>
+  <link name="reu_module_out_3">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.015" radius="0.006"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0 0 1 1"/>
+      </material>
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0"/>
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+    </inertial>
+  </link>
+  <joint name="reu_joint_in2body_3" type="fixed">
+    <parent link="reu_module_in_3"/>
+    <child link="reu_module_body_3"/>
+    <origin rpy="1.57076327 0 0" xyz="0 -0.0066 0"/>
+  </joint>
+  <joint name="reu_joint_body2out_3" type="fixed">
+    <parent link="reu_module_body_3"/>
+    <child link="reu_module_out_3"/>
+    <origin rpy="0 1.57076327 0" xyz="0 0 0.044"/>
+  </joint>
+  <joint name="reu_joint_out2in_3" type="revolute">
+    <parent link="reu_module_out_3"/>
+    <child link="reu_module_in_4"/>
+    <axis xyz="0 0 1"/>
+    <origin rpy="0 3.14152654 -1.57076327" xyz="0 0 0"/>
+    <dynamics damping="0.1" friction="0.2"/>
+    <limit effort="7.0" lower="-1.57076327" upper="1.57076327" velocity="2.2"/>
+  </joint>
+  <transmission name="module_2_module_trans_3">
+    <type>transmission_interface/SimpleTranmission</type>
+    <actuator name="module_actuator_3">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="reu_joint_out2in_3">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+    </joint>
+  </transmission>
+  <link name="reu_module_in_4">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.02" radius="0.006"/>
+      </geometry>
+      <material name="red">
+        <color rgba="1 0 0 1"/>
+      </material>
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="1"/>
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+    </inertial>
+  </link>
+  <link name="reu_module_body_4">
+    <visual>
+      <origin rpy="0 0 0" xyz="-0.02539 -0.02539 -0.9"/>
+      <geometry>
+        <mesh filename="package://snakelib_description/REU_snake/meshes/ReU.STL" scale="0.0254 0.0254 0.0254"/>
+      </geometry>
+      <material name="green_dark">
+        <color rgba="0 0.6 0 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.0208325" radius="0.02539"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0.103"/>
+      <inertia ixx="2.948" ixy="0.0452" ixz="0.4092" iyy="2.9305" iyz="-0.405" izz="1.819"/>
+    </inertial>
+  </link>
+  <link name="reu_module_out_4">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.015" radius="0.006"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0 0 1 1"/>
+      </material>
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0"/>
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+    </inertial>
+  </link>
+  <joint name="reu_joint_in2body_4" type="fixed">
+    <parent link="reu_module_in_4"/>
+    <child link="reu_module_body_4"/>
+    <origin rpy="1.57076327 0 0" xyz="0 -0.0066 0"/>
+  </joint>
+  <joint name="reu_joint_body2out_4" type="fixed">
+    <parent link="reu_module_body_4"/>
+    <child link="reu_module_out_4"/>
+    <origin rpy="0 1.57076327 0" xyz="0 0 0.044"/>
+  </joint>
+  <joint name="reu_joint_out2in_4" type="revolute">
+    <parent link="reu_module_out_4"/>
+    <child link="reu_module_in_5"/>
+    <axis xyz="0 0 1"/>
+    <origin rpy="0 3.14152654 -1.57076327" xyz="0 0 0"/>
+    <dynamics damping="0.1" friction="0.2"/>
+    <limit effort="7.0" lower="-1.57076327" upper="1.57076327" velocity="2.2"/>
+  </joint>
+  <transmission name="module_2_module_trans_4">
+    <type>transmission_interface/SimpleTranmission</type>
+    <actuator name="module_actuator_4">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="reu_joint_out2in_4">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+    </joint>
+  </transmission>
+  <link name="reu_module_in_5">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.02" radius="0.006"/>
+      </geometry>
+      <material name="red">
+        <color rgba="1 0 0 1"/>
+      </material>
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="1"/>
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+    </inertial>
+  </link>
+  <link name="reu_module_body_5">
+    <visual>
+      <origin rpy="0 0 0" xyz="-0.02539 -0.02539 -0.9"/>
+      <geometry>
+        <mesh filename="package://snakelib_description/REU_snake/meshes/ReU.STL" scale="0.0254 0.0254 0.0254"/>
+      </geometry>
+      <material name="green_light">
+        <color rgba="0 0.4 0 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.0208325" radius="0.02539"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0.103"/>
+      <inertia ixx="2.948" ixy="0.0452" ixz="0.4092" iyy="2.9305" iyz="-0.405" izz="1.819"/>
+    </inertial>
+  </link>
+  <link name="reu_module_out_5">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.015" radius="0.006"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0 0 1 1"/>
+      </material>
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0"/>
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+    </inertial>
+  </link>
+  <joint name="reu_joint_in2body_5" type="fixed">
+    <parent link="reu_module_in_5"/>
+    <child link="reu_module_body_5"/>
+    <origin rpy="1.57076327 0 0" xyz="0 -0.0066 0"/>
+  </joint>
+  <joint name="reu_joint_body2out_5" type="fixed">
+    <parent link="reu_module_body_5"/>
+    <child link="reu_module_out_5"/>
+    <origin rpy="0 1.57076327 0" xyz="0 0 0.044"/>
+  </joint>
+  <joint name="reu_joint_out2in_5" type="revolute">
+    <parent link="reu_module_out_5"/>
+    <child link="reu_module_in_6"/>
+    <axis xyz="0 0 1"/>
+    <origin rpy="0 3.14152654 -1.57076327" xyz="0 0 0"/>
+    <dynamics damping="0.1" friction="0.2"/>
+    <limit effort="7.0" lower="-1.57076327" upper="1.57076327" velocity="2.2"/>
+  </joint>
+  <transmission name="module_2_module_trans_5">
+    <type>transmission_interface/SimpleTranmission</type>
+    <actuator name="module_actuator_5">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="reu_joint_out2in_5">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+    </joint>
+  </transmission>
+  <link name="reu_module_in_6">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.02" radius="0.006"/>
+      </geometry>
+      <material name="red">
+        <color rgba="1 0 0 1"/>
+      </material>
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="1"/>
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+    </inertial>
+  </link>
+  <link name="reu_module_body_6">
+    <visual>
+      <origin rpy="0 0 0" xyz="-0.02539 -0.02539 -0.9"/>
+      <geometry>
+        <mesh filename="package://snakelib_description/REU_snake/meshes/ReU.STL" scale="0.0254 0.0254 0.0254"/>
+      </geometry>
+      <material name="green_dark">
+        <color rgba="0 0.6 0 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.0208325" radius="0.02539"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0.103"/>
+      <inertia ixx="2.948" ixy="0.0452" ixz="0.4092" iyy="2.9305" iyz="-0.405" izz="1.819"/>
+    </inertial>
+  </link>
+  <link name="reu_module_out_6">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.015" radius="0.006"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0 0 1 1"/>
+      </material>
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0"/>
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+    </inertial>
+  </link>
+  <joint name="reu_joint_in2body_6" type="fixed">
+    <parent link="reu_module_in_6"/>
+    <child link="reu_module_body_6"/>
+    <origin rpy="1.57076327 0 0" xyz="0 -0.0066 0"/>
+  </joint>
+  <joint name="reu_joint_body2out_6" type="fixed">
+    <parent link="reu_module_body_6"/>
+    <child link="reu_module_out_6"/>
+    <origin rpy="0 1.57076327 0" xyz="0 0 0.044"/>
+  </joint>
+  <joint name="reu_joint_out2in_6" type="revolute">
+    <parent link="reu_module_out_6"/>
+    <child link="reu_module_in_7"/>
+    <axis xyz="0 0 1"/>
+    <origin rpy="0 3.14152654 -1.57076327" xyz="0 0 0"/>
+    <dynamics damping="0.1" friction="0.2"/>
+    <limit effort="7.0" lower="-1.57076327" upper="1.57076327" velocity="2.2"/>
+  </joint>
+  <transmission name="module_2_module_trans_6">
+    <type>transmission_interface/SimpleTranmission</type>
+    <actuator name="module_actuator_6">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="reu_joint_out2in_6">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+    </joint>
+  </transmission>
+  <link name="reu_module_in_7">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.02" radius="0.006"/>
+      </geometry>
+      <material name="red">
+        <color rgba="1 0 0 1"/>
+      </material>
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="1"/>
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+    </inertial>
+  </link>
+  <link name="reu_module_body_7">
+    <visual>
+      <origin rpy="0 0 0" xyz="-0.02539 -0.02539 -0.9"/>
+      <geometry>
+        <mesh filename="package://snakelib_description/REU_snake/meshes/ReU.STL" scale="0.0254 0.0254 0.0254"/>
+      </geometry>
+      <material name="green_light">
+        <color rgba="0 0.4 0 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.0208325" radius="0.02539"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0.103"/>
+      <inertia ixx="2.948" ixy="0.0452" ixz="0.4092" iyy="2.9305" iyz="-0.405" izz="1.819"/>
+    </inertial>
+  </link>
+  <link name="reu_module_out_7">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.015" radius="0.006"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0 0 1 1"/>
+      </material>
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0"/>
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+    </inertial>
+  </link>
+  <joint name="reu_joint_in2body_7" type="fixed">
+    <parent link="reu_module_in_7"/>
+    <child link="reu_module_body_7"/>
+    <origin rpy="1.57076327 0 0" xyz="0 -0.0066 0"/>
+  </joint>
+  <joint name="reu_joint_body2out_7" type="fixed">
+    <parent link="reu_module_body_7"/>
+    <child link="reu_module_out_7"/>
+    <origin rpy="0 1.57076327 0" xyz="0 0 0.044"/>
+  </joint>
+  <joint name="reu_joint_out2in_7" type="revolute">
+    <parent link="reu_module_out_7"/>
+    <child link="reu_module_in_8"/>
+    <axis xyz="0 0 1"/>
+    <origin rpy="0 3.14152654 -1.57076327" xyz="0 0 0"/>
+    <dynamics damping="0.1" friction="0.2"/>
+    <limit effort="7.0" lower="-1.57076327" upper="1.57076327" velocity="2.2"/>
+  </joint>
+  <transmission name="module_2_module_trans_7">
+    <type>transmission_interface/SimpleTranmission</type>
+    <actuator name="module_actuator_7">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="reu_joint_out2in_7">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+    </joint>
+  </transmission>
+  <link name="reu_module_in_8">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.02" radius="0.006"/>
+      </geometry>
+      <material name="red">
+        <color rgba="1 0 0 1"/>
+      </material>
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="1"/>
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+    </inertial>
+  </link>
+  <link name="reu_module_body_8">
+    <visual>
+      <origin rpy="0 0 0" xyz="-0.02539 -0.02539 -0.9"/>
+      <geometry>
+        <mesh filename="package://snakelib_description/REU_snake/meshes/ReU.STL" scale="0.0254 0.0254 0.0254"/>
+      </geometry>
+      <material name="green_dark">
+        <color rgba="0 0.6 0 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.0208325" radius="0.02539"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0.103"/>
+      <inertia ixx="2.948" ixy="0.0452" ixz="0.4092" iyy="2.9305" iyz="-0.405" izz="1.819"/>
+    </inertial>
+  </link>
+  <link name="reu_module_out_8">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.015" radius="0.006"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0 0 1 1"/>
+      </material>
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0"/>
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+    </inertial>
+  </link>
+  <joint name="reu_joint_in2body_8" type="fixed">
+    <parent link="reu_module_in_8"/>
+    <child link="reu_module_body_8"/>
+    <origin rpy="1.57076327 0 0" xyz="0 -0.0066 0"/>
+  </joint>
+  <joint name="reu_joint_body2out_8" type="fixed">
+    <parent link="reu_module_body_8"/>
+    <child link="reu_module_out_8"/>
+    <origin rpy="0 1.57076327 0" xyz="0 0 0.044"/>
+  </joint>
+  <joint name="reu_joint_out2in_8" type="revolute">
+    <parent link="reu_module_out_8"/>
+    <child link="reu_module_in_9"/>
+    <axis xyz="0 0 1"/>
+    <origin rpy="0 3.14152654 -1.57076327" xyz="0 0 0"/>
+    <dynamics damping="0.1" friction="0.2"/>
+    <limit effort="7.0" lower="-1.57076327" upper="1.57076327" velocity="2.2"/>
+  </joint>
+  <transmission name="module_2_module_trans_8">
+    <type>transmission_interface/SimpleTranmission</type>
+    <actuator name="module_actuator_8">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="reu_joint_out2in_8">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+    </joint>
+  </transmission>
+  <link name="reu_module_in_9">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.02" radius="0.006"/>
+      </geometry>
+      <material name="red">
+        <color rgba="1 0 0 1"/>
+      </material>
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="1"/>
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+    </inertial>
+  </link>
+  <link name="reu_module_body_9">
+    <visual>
+      <origin rpy="0 0 0" xyz="-0.02539 -0.02539 -0.9"/>
+      <geometry>
+        <mesh filename="package://snakelib_description/REU_snake/meshes/ReU.STL" scale="0.0254 0.0254 0.0254"/>
+      </geometry>
+      <material name="green_light">
+        <color rgba="0 0.4 0 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.0208325" radius="0.02539"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0.103"/>
+      <inertia ixx="2.948" ixy="0.0452" ixz="0.4092" iyy="2.9305" iyz="-0.405" izz="1.819"/>
+    </inertial>
+  </link>
+  <link name="reu_module_out_9">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.015" radius="0.006"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0 0 1 1"/>
+      </material>
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0"/>
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+    </inertial>
+  </link>
+  <joint name="reu_joint_in2body_9" type="fixed">
+    <parent link="reu_module_in_9"/>
+    <child link="reu_module_body_9"/>
+    <origin rpy="1.57076327 0 0" xyz="0 -0.0066 0"/>
+  </joint>
+  <joint name="reu_joint_body2out_9" type="fixed">
+    <parent link="reu_module_body_9"/>
+    <child link="reu_module_out_9"/>
+    <origin rpy="0 1.57076327 0" xyz="0 0 0.044"/>
+  </joint>
+  <joint name="reu_joint_out2in_9" type="revolute">
+    <parent link="reu_module_out_9"/>
+    <child link="reu_module_in_10"/>
+    <axis xyz="0 0 1"/>
+    <origin rpy="0 3.14152654 -1.57076327" xyz="0 0 0"/>
+    <dynamics damping="0.1" friction="0.2"/>
+    <limit effort="7.0" lower="-1.57076327" upper="1.57076327" velocity="2.2"/>
+  </joint>
+  <transmission name="module_2_module_trans_9">
+    <type>transmission_interface/SimpleTranmission</type>
+    <actuator name="module_actuator_9">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="reu_joint_out2in_9">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+    </joint>
+  </transmission>
+  <link name="reu_module_in_10">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.02" radius="0.006"/>
+      </geometry>
+      <material name="red">
+        <color rgba="1 0 0 1"/>
+      </material>
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="1"/>
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+    </inertial>
+  </link>
+  <link name="reu_module_body_10">
+    <visual>
+      <origin rpy="0 0 0" xyz="-0.02539 -0.02539 -0.9"/>
+      <geometry>
+        <mesh filename="package://snakelib_description/REU_snake/meshes/ReU.STL" scale="0.0254 0.0254 0.0254"/>
+      </geometry>
+      <material name="green_dark">
+        <color rgba="0 0.6 0 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.0208325" radius="0.02539"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0.103"/>
+      <inertia ixx="2.948" ixy="0.0452" ixz="0.4092" iyy="2.9305" iyz="-0.405" izz="1.819"/>
+    </inertial>
+  </link>
+  <link name="reu_module_out_10">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.015" radius="0.006"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0 0 1 1"/>
+      </material>
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0"/>
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+    </inertial>
+  </link>
+  <joint name="reu_joint_in2body_10" type="fixed">
+    <parent link="reu_module_in_10"/>
+    <child link="reu_module_body_10"/>
+    <origin rpy="1.57076327 0 0" xyz="0 -0.0066 0"/>
+  </joint>
+  <joint name="reu_joint_body2out_10" type="fixed">
+    <parent link="reu_module_body_10"/>
+    <child link="reu_module_out_10"/>
+    <origin rpy="0 1.57076327 0" xyz="0 0 0.044"/>
+  </joint>
+  <joint name="reu_joint_out2in_10" type="revolute">
+    <parent link="reu_module_out_10"/>
+    <child link="reu_module_in_11"/>
+    <axis xyz="0 0 1"/>
+    <origin rpy="0 3.14152654 -1.57076327" xyz="0 0 0"/>
+    <dynamics damping="0.1" friction="0.2"/>
+    <limit effort="7.0" lower="-1.57076327" upper="1.57076327" velocity="2.2"/>
+  </joint>
+  <transmission name="module_2_module_trans_10">
+    <type>transmission_interface/SimpleTranmission</type>
+    <actuator name="module_actuator_10">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="reu_joint_out2in_10">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+    </joint>
+  </transmission>
+  <link name="reu_module_in_11">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.02" radius="0.006"/>
+      </geometry>
+      <material name="red">
+        <color rgba="1 0 0 1"/>
+      </material>
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="1"/>
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+    </inertial>
+  </link>
+  <link name="reu_module_body_11">
+    <visual>
+      <origin rpy="0 0 0" xyz="-0.02539 -0.02539 -0.9"/>
+      <geometry>
+        <mesh filename="package://snakelib_description/REU_snake/meshes/ReU.STL" scale="0.0254 0.0254 0.0254"/>
+      </geometry>
+      <material name="green_light">
+        <color rgba="0 0.4 0 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.0208325" radius="0.02539"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0.103"/>
+      <inertia ixx="2.948" ixy="0.0452" ixz="0.4092" iyy="2.9305" iyz="-0.405" izz="1.819"/>
+    </inertial>
+  </link>
+  <link name="reu_module_out_11">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.015" radius="0.006"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0 0 1 1"/>
+      </material>
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0"/>
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+    </inertial>
+  </link>
+  <joint name="reu_joint_in2body_11" type="fixed">
+    <parent link="reu_module_in_11"/>
+    <child link="reu_module_body_11"/>
+    <origin rpy="1.57076327 0 0" xyz="0 -0.0066 0"/>
+  </joint>
+  <joint name="reu_joint_body2out_11" type="fixed">
+    <parent link="reu_module_body_11"/>
+    <child link="reu_module_out_11"/>
+    <origin rpy="0 1.57076327 0" xyz="0 0 0.044"/>
+  </joint>
+  <joint name="reu_joint_out2in_11" type="revolute">
+    <parent link="reu_module_out_11"/>
+    <child link="reu_module_in_12"/>
+    <axis xyz="0 0 1"/>
+    <origin rpy="0 3.14152654 -1.57076327" xyz="0 0 0"/>
+    <dynamics damping="0.1" friction="0.2"/>
+    <limit effort="7.0" lower="-1.57076327" upper="1.57076327" velocity="2.2"/>
+  </joint>
+  <transmission name="module_2_module_trans_11">
+    <type>transmission_interface/SimpleTranmission</type>
+    <actuator name="module_actuator_11">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="reu_joint_out2in_11">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+    </joint>
+  </transmission>
+  <link name="reu_module_in_12">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.02" radius="0.006"/>
+      </geometry>
+      <material name="red">
+        <color rgba="1 0 0 1"/>
+      </material>
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="1"/>
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+    </inertial>
+  </link>
+  <link name="reu_module_body_12">
+    <visual>
+      <origin rpy="0 0 0" xyz="-0.02539 -0.02539 -0.9"/>
+      <geometry>
+        <mesh filename="package://snakelib_description/REU_snake/meshes/ReU.STL" scale="0.0254 0.0254 0.0254"/>
+      </geometry>
+      <material name="green_dark">
+        <color rgba="0 0.6 0 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.0208325" radius="0.02539"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0.103"/>
+      <inertia ixx="2.948" ixy="0.0452" ixz="0.4092" iyy="2.9305" iyz="-0.405" izz="1.819"/>
+    </inertial>
+  </link>
+  <link name="reu_module_out_12">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.015" radius="0.006"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0 0 1 1"/>
+      </material>
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0"/>
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+    </inertial>
+  </link>
+  <joint name="reu_joint_in2body_12" type="fixed">
+    <parent link="reu_module_in_12"/>
+    <child link="reu_module_body_12"/>
+    <origin rpy="1.57076327 0 0" xyz="0 -0.0066 0"/>
+  </joint>
+  <joint name="reu_joint_body2out_12" type="fixed">
+    <parent link="reu_module_body_12"/>
+    <child link="reu_module_out_12"/>
+    <origin rpy="0 1.57076327 0" xyz="0 0 0.044"/>
+  </joint>
+  <joint name="reu_joint_out2in_12" type="revolute">
+    <parent link="reu_module_out_12"/>
+    <child link="reu_module_in_13"/>
+    <axis xyz="0 0 1"/>
+    <origin rpy="0 3.14152654 -1.57076327" xyz="0 0 0"/>
+    <dynamics damping="0.1" friction="0.2"/>
+    <limit effort="7.0" lower="-1.57076327" upper="1.57076327" velocity="2.2"/>
+  </joint>
+  <transmission name="module_2_module_trans_12">
+    <type>transmission_interface/SimpleTranmission</type>
+    <actuator name="module_actuator_12">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="reu_joint_out2in_12">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+    </joint>
+  </transmission>
+  <link name="reu_module_in_13">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.02" radius="0.006"/>
+      </geometry>
+      <material name="red">
+        <color rgba="1 0 0 1"/>
+      </material>
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="1"/>
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+    </inertial>
+  </link>
+  <link name="reu_module_body_13">
+    <visual>
+      <origin rpy="0 0 0" xyz="-0.02539 -0.02539 -0.9"/>
+      <geometry>
+        <mesh filename="package://snakelib_description/REU_snake/meshes/ReU.STL" scale="0.0254 0.0254 0.0254"/>
+      </geometry>
+      <material name="green_light">
+        <color rgba="0 0.4 0 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.0208325" radius="0.02539"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0.103"/>
+      <inertia ixx="2.948" ixy="0.0452" ixz="0.4092" iyy="2.9305" iyz="-0.405" izz="1.819"/>
+    </inertial>
+  </link>
+  <link name="reu_module_out_13">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.015" radius="0.006"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0 0 1 1"/>
+      </material>
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0"/>
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+    </inertial>
+  </link>
+  <joint name="reu_joint_in2body_13" type="fixed">
+    <parent link="reu_module_in_13"/>
+    <child link="reu_module_body_13"/>
+    <origin rpy="1.57076327 0 0" xyz="0 -0.0066 0"/>
+  </joint>
+  <joint name="reu_joint_body2out_13" type="fixed">
+    <parent link="reu_module_body_13"/>
+    <child link="reu_module_out_13"/>
+    <origin rpy="0 1.57076327 0" xyz="0 0 0.044"/>
+  </joint>
+  <joint name="reu_joint_out2in_13" type="revolute">
+    <parent link="reu_module_out_13"/>
+    <child link="reu_module_in_14"/>
+    <axis xyz="0 0 1"/>
+    <origin rpy="0 3.14152654 -1.57076327" xyz="0 0 0"/>
+    <dynamics damping="0.1" friction="0.2"/>
+    <limit effort="7.0" lower="-1.57076327" upper="1.57076327" velocity="2.2"/>
+  </joint>
+  <transmission name="module_2_module_trans_13">
+    <type>transmission_interface/SimpleTranmission</type>
+    <actuator name="module_actuator_13">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="reu_joint_out2in_13">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+    </joint>
+  </transmission>
+  <link name="reu_module_in_14">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.02" radius="0.006"/>
+      </geometry>
+      <material name="red">
+        <color rgba="1 0 0 1"/>
+      </material>
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="1"/>
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+    </inertial>
+  </link>
+  <link name="reu_module_body_14">
+    <visual>
+      <origin rpy="0 0 0" xyz="-0.02539 -0.02539 -0.9"/>
+      <geometry>
+        <mesh filename="package://snakelib_description/REU_snake/meshes/ReU.STL" scale="0.0254 0.0254 0.0254"/>
+      </geometry>
+      <material name="green_dark">
+        <color rgba="0 0.6 0 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.0208325" radius="0.02539"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0.103"/>
+      <inertia ixx="2.948" ixy="0.0452" ixz="0.4092" iyy="2.9305" iyz="-0.405" izz="1.819"/>
+    </inertial>
+  </link>
+  <link name="reu_module_out_14">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.015" radius="0.006"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0 0 1 1"/>
+      </material>
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0"/>
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+    </inertial>
+  </link>
+  <joint name="reu_joint_in2body_14" type="fixed">
+    <parent link="reu_module_in_14"/>
+    <child link="reu_module_body_14"/>
+    <origin rpy="1.57076327 0 0" xyz="0 -0.0066 0"/>
+  </joint>
+  <joint name="reu_joint_body2out_14" type="fixed">
+    <parent link="reu_module_body_14"/>
+    <child link="reu_module_out_14"/>
+    <origin rpy="0 1.57076327 0" xyz="0 0 0.044"/>
+  </joint>
+  <joint name="reu_joint_out2in_14" type="revolute">
+    <parent link="reu_module_out_14"/>
+    <child link="reu_module_in_15"/>
+    <axis xyz="0 0 1"/>
+    <origin rpy="0 3.14152654 -1.57076327" xyz="0 0 0"/>
+    <dynamics damping="0.1" friction="0.2"/>
+    <limit effort="7.0" lower="-1.57076327" upper="1.57076327" velocity="2.2"/>
+  </joint>
+  <transmission name="module_2_module_trans_14">
+    <type>transmission_interface/SimpleTranmission</type>
+    <actuator name="module_actuator_14">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="reu_joint_out2in_14">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+    </joint>
+  </transmission>
+  <link name="reu_module_in_15">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.02" radius="0.006"/>
+      </geometry>
+      <material name="red">
+        <color rgba="1 0 0 1"/>
+      </material>
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="1"/>
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+    </inertial>
+  </link>
+  <link name="reu_module_body_15">
+    <visual>
+      <origin rpy="0 0 0" xyz="-0.02539 -0.02539 -0.9"/>
+      <geometry>
+        <mesh filename="package://snakelib_description/REU_snake/meshes/ReU.STL" scale="0.0254 0.0254 0.0254"/>
+      </geometry>
+      <material name="green_light">
+        <color rgba="0 0.4 0 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.0208325" radius="0.02539"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0.103"/>
+      <inertia ixx="2.948" ixy="0.0452" ixz="0.4092" iyy="2.9305" iyz="-0.405" izz="1.819"/>
+    </inertial>
+  </link>
+  <link name="reu_module_out_15">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.015" radius="0.006"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0 0 1 1"/>
+      </material>
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0"/>
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+    </inertial>
+  </link>
+  <joint name="reu_joint_in2body_15" type="fixed">
+    <parent link="reu_module_in_15"/>
+    <child link="reu_module_body_15"/>
+    <origin rpy="1.57076327 0 0" xyz="0 -0.0066 0"/>
+  </joint>
+  <joint name="reu_joint_body2out_15" type="fixed">
+    <parent link="reu_module_body_15"/>
+    <child link="reu_module_out_15"/>
+    <origin rpy="0 1.57076327 0" xyz="0 0 0.044"/>
+  </joint>
+<joint name="reu_joint_out2in_15" type="revolute">
+    <parent link="reu_module_out_15"/>
+    <child link="reu_module_in_16"/>
+    <axis xyz="0 0 1"/>
+    <origin rpy="0 3.14152654 -1.57076327" xyz="0 0 0"/>
+    <dynamics damping="0.1" friction="0.2"/>
+    <limit effort="7.0" lower="-1.57076327" upper="1.57076327" velocity="2.2"/>
+  </joint>
+  <transmission name="module_2_module_trans_15">
+    <type>transmission_interface/SimpleTranmission</type>
+    <actuator name="module_actuator_15">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="reu_joint_out2in_15">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+    </joint>
+  </transmission>
+  <link name="reu_module_in_16">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.02" radius="0.006"/>
+      </geometry>
+      <material name="red">
+        <color rgba="1 0 0 1"/>
+      </material>
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="1"/>
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+    </inertial>
+  </link>
+  <link name="reu_module_body_16">
+    <visual>
+      <origin rpy="0 0 0" xyz="-0.02539 -0.02539 -0.9"/>
+      <geometry>
+        <mesh filename="package://snakelib_description/REU_snake/meshes/ReU.STL" scale="0.0254 0.0254 0.0254"/>
+      </geometry>
+      <material name="green_light">
+        <color rgba="0 0.4 0 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.0208325" radius="0.02539"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0.103"/>
+      <inertia ixx="2.948" ixy="0.0452" ixz="0.4092" iyy="2.9305" iyz="-0.405" izz="1.819"/>
+    </inertial>
+  </link>
+  <link name="reu_module_out_16">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.015" radius="0.006"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0 0 1 1"/>
+      </material>
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0"/>
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+    </inertial>
+  </link>
+  <joint name="reu_joint_in2body_16" type="fixed">
+    <parent link="reu_module_in_16"/>
+    <child link="reu_module_body_16"/>
+    <origin rpy="1.57076327 0 0" xyz="0 -0.0066 0"/>
+  </joint>
+  <joint name="reu_joint_body2out_16" type="fixed">
+    <parent link="reu_module_body_16"/>
+    <child link="reu_module_out_16"/>
+    <origin rpy="0 1.57076327 0" xyz="0 0 0.044"/>
+  </joint>
+</robot>

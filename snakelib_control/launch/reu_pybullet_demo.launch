@@ -1,0 +1,15 @@
+<launch>
+    <rosparam file="$(find snakelib_control)/param/snake_params.yaml" command="load" />
+
+    <arg name="config_file" default="$(find snakelib_bullet)/param/sim_params.yaml" />
+    <arg name="urdf_path" default="$(find snakelib_description)/reu_snake/reu_snake.urdf" />
+
+    <node pkg="snakelib_bullet" type="pybullet_interface.py" name="pybullet_interface" output="screen">
+        <rosparam file="$(arg config_file)" command="load" />
+        <param name="urdf_path" type="string" value="$(arg urdf_path)" />
+    </node >
+    
+    <node pkg="snakelib_control" type="command_manager_node" name="command_manager" output="screen"/>
+    <node pkg="snakelib_control" type="gait_script_node" name="gait_script_node" output="screen"/>
+    
+</launch>

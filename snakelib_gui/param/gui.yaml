@@ -1,0 +1,17 @@
+topics: [
+  '/hebi_sensors/data',
+  # '/initialpose',
+  # '/joy',
+  # '/joy/set_feedback',
+  # '/move_base_simple/goal',
+  # '/processed_overlay_cam/image_raw',
+  # '/rosout',
+  # '/rosout_agg',
+  '/snake/command',
+  '/snake/joint_commands',
+  '/snake/joint_states',
+  # '/snake_command',
+  # tf',
+  # '/tf_static',
+  # '/visualization/joint_states',
+]

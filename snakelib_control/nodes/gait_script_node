@@ -1,0 +1,50 @@
+#!/usr/bin/env python3
+
+""" Node that publishes a sequence of gaits to run through for testing.
+
+Uses the default gait parameters.
+"""
+
+import rospy
+from sensor_msgs.msg import JointState
+from snakelib_msgs.msg import SnakeCommand
+import numpy as np
+
+pub = rospy.Publisher("snake/command", SnakeCommand, queue_size=10)
+
+def publish_snake_command(command):
+    """Publishes the snake command message.
+
+    Args:
+        command: string denoting the command to send 
+    """
+
+    cmd = SnakeCommand()
+    cmd.command_name = command
+    pub.publish(cmd)
+
+def main():
+
+    rospy.init_node("gait_script_node", anonymous=True)
+
+    loop_rate = 10
+    rate = rospy.Rate(loop_rate)
+
+    seconds_per_gait = 6
+    loops_per_gait = loop_rate*seconds_per_gait
+
+    commands = ["lateral_undulation","home","linear_progression","hold_position","rolling","sidewinding","slithering","turn_in_place"]
+
+    while not rospy.is_shutdown():
+
+        for command in commands:
+            for x in range(loops_per_gait):
+                publish_snake_command(command)
+                rate.sleep()
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except rospy.ROSInterruptException:
+        pass

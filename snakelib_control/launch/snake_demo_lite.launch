@@ -1,0 +1,34 @@
+<launch>
+    <!-- Higher level user parameter -->
+    <arg name="snake_type" default="REU"/>
+
+    <!-- Load the param on ROS paramter server -->
+    <param name="snake_type" value="$(arg snake_type)" />
+    <param name="joystick_name" value="logi_cordless_rumblepad2" />
+    <!-- All snake parameters are defined in this file. -->
+    <rosparam file="$(find snakelib_control)/param/snake_params.yaml" command="load" />
+
+    <!-- Joy Node -->
+    <node respawn="true" name="snake_joy" pkg="joy" type="joy_node">
+        <param name="dev" type="string" value="/dev/input/js0" />
+    </node>
+
+    <!-- Teleop Node -->
+    <node pkg="snakelib_control" type="joystick_teleop_node" name="joystick_teleop_node" output="screen"/>
+    <!-- Command Manager Node-->
+    <node pkg="snakelib_control" type="command_manager_node" name="command_manager" output="screen"/>
+
+    <!-- Hebi Interface Node -->
+    <node pkg="snakelib_hebi" type="hebi_control_interface_node" name="hebi_control_interface_node" output="screen" respawn="true"/>
+    <node pkg="snakelib_hebi" type="hebi_sensor_interface_node" name="hebi_sensor_interface_node" output="screen" respawn="true"/>
+    
+
+    <!-- Robot description-->
+    <param name="robot_description" textfile="$(find snakelib_description)/$(arg snake_type)_snake/$(arg snake_type)_snake.urdf"/>
+
+
+   <!-- <node pkg="snakelib_hebi" type="snake_visualizer_node" name="snake_visualizer_node" output="screen" respawn="true"/>
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" >
+        <remap from="/joint_states" to="/visualization/joint_states" />
+    </node>-->
+</launch>

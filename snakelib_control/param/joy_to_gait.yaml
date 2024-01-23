@@ -1,0 +1,316 @@
+# Provides mapping from joystick buttons to gait and mode names. Also few extra parameters used by joystick node are defined in this file
+# g__ denotes a "gait" g_pole__ denotes a special pole climbing gait, mode__ denotes a "mode change", enable__ denotes a mapping that defines enabling a certain behaviour, here we use it for setting direction of the pole climbing gait.
+# Some gaits don't have "plus" or "minus" appended because they are mapped to an axis on the controller that returns 1 to -1 depending on the direction, rather than having "plus" and "minus" mapped to separate buttons.
+# Example: lateral undulation is mapped to dpad-x, which will be -1 when pressing right and 1 when pressing left.
+# The third index is a flag that changes the behavior of the button. 0 corresponds to normal behavior, 1 corresponds to mode switch behavior, and 2 corresponds to enable behavior.
+
+# Speed parameters
+speed_step: 0.001
+speed_min: 0.25
+speed_max: 1.25
+
+# Pole climbing tightness parameters
+tightness_step: 0.005
+tightness_min: 0.0
+
+# Conical sidewinding parameters
+slope_default: 0.0
+slope_step: 0.001
+
+# Normal motion mode
+mode__normal:
+  # Axes
+  dpad_x:
+   0: g__conical_sidewinding__
+  dpad_y:
+   0: g__slithering__
+  l_stick_x:
+    0: g__lateral_undulation__
+  l_stick_y:
+    0: g__linear_progression__
+  r_stick_x:
+   0: g__turn_in_place__
+  r_stick_y:
+   0: ''
+
+  # Buttons
+  l_bumper:
+    0: g__rolling__plus
+  r_bumper:
+    0: g__rolling__minus
+  l_trigger:
+    0: speed__minus
+  r_trigger:
+    0: speed__plus
+  X:
+    0: g__rolling_in_shape__plus
+    1: mode__normal
+  Y:
+    0: slope__plus
+    1: mode__pole_climb
+  A:
+    0: slope__minus
+    1: mode__slow_gaits
+  B:
+    0: g__rolling_in_shape__minus
+    1: mode__scan
+  r_stick:
+    0: mode__head_look
+    1: mode__head_look_ik
+  l_stick:
+    0: light_toggle
+    1: light_toggle
+    2: light_toggle
+  start:
+    0: home
+    1: home
+    2: home
+  back:
+    0: mode_shift
+    1: mode_shift
+
+# Slow gaits mode
+mode__slow_gaits:
+  # Axes
+  dpad_x:
+    0: g__lateral_undulation__
+  dpad_y:
+    0: g__linear_progression__
+  r_stick_x:
+    0: g__turn_in_place__
+  r_stick_y:
+    0: ''
+  l_stick_x:
+    0: e__precision_sidewinding__
+  l_stick_y:
+    0: ''
+
+  # Buttons
+  l_bumper:
+    0: g__rolling__plus
+  r_bumper:
+    0: g__rolling__minus
+  l_trigger:
+    0: speed__minus
+  r_trigger:
+    0: speed__plus
+  X:
+    0: g__rolling_in_shape__plus
+    1: mode__normal
+  Y:
+    0: ''
+    1: mode__pole_climb
+  A:
+    0: ''
+    1: mode__slow_gaits
+  B:
+    0: g__rolling_in_shape__minus
+    1: mode__scan
+  r_stick:
+    0: mode__head_look
+    1: mode__head_look
+  l_stick:
+    0: light_toggle
+    1: light_toggle
+    2: light_toggle
+  start:
+    0: home
+    1: home
+    2: home
+  back:
+    0: mode_shift
+    1: mode_shift
+
+# Pole climbing mode
+mode__pole_climb:
+  # Axes
+  dpad_x:
+    0: ''
+    1: ''
+    2: pole_direction__
+  dpad_y:
+    0: g_pole__rolling_helix__
+  r_stick_x:
+    0: ''
+  r_stick_y:
+    0: ''
+  l_stick_x:
+    0: ''
+  l_stick_y:
+    0: ''
+
+  # Buttons
+  l_bumper:
+    0: tightness__minus
+  r_bumper:
+    0: tightness__plus
+  l_trigger:
+    0: speed__minus
+  r_trigger:
+    0: speed__plus
+  X:
+    0: enable__pole_climb__out
+    1: mode__normal
+  Y:
+    0: ''
+    1: mode__pole_climb
+  A:
+    0: ''
+    1: mode__slow_gaits
+  B:
+    0: enable__pole_climb__in
+    1: mode__scan
+  r_stick:
+    0: mode__head_look
+    1: mode__head_look
+  l_stick:
+    0: light_toggle
+    1: light_toggle
+    2: light_toggle
+  start:
+    0: home
+    1: home
+    2: home
+  back:
+    0: mode_shift
+    1: mode_shift
+
+# Scanning mode
+mode__scan:
+  # Axes
+  dpad_x:
+    0: e__scan__
+  dpad_y:
+    0: ''
+  r_stick_x:
+    0: ''
+  r_stick_y:
+    0: ''
+  l_stick_x:
+    0: ''
+  l_stick_y:
+    0: ''
+
+  # Buttons
+  l_bumper:
+    0: ''
+  r_bumper:
+    0: ''
+  l_trigger:
+    0: ''
+  r_trigger:
+    0: ''
+  X:
+    0: ''
+    1: mode__normal
+  Y:
+    0: ''
+    1: mode__pole_climb
+  A:
+    0: ''
+    1: mode__slow_gaits
+  B:
+    0: ''
+    1: mode__scan
+  r_stick:
+    0: mode__head_look
+    1: mode__head_look
+  l_stick:
+    0: light_toggle
+    1: light_toggle
+    2: light_toggle
+  start:
+    0: home
+    1: home
+    2: home
+  back:
+    0: mode_shift
+    1: mode_shift
+
+# Head look mode
+mode__head_look:
+  # Axes
+  dpad_x:
+    0: ''
+  dpad_y:
+    0: ''
+  r_stick_x:
+    0: g__head_look__
+  r_stick_y:
+    0: g__head_look__
+  l_stick_x:
+    0: ''
+  l_stick_y:
+    0: ''
+  # Buttons
+  l_bumper:
+    0: ''
+  r_bumper:
+    0: ''
+  l_trigger:
+    0: ''
+  r_trigger:
+    0: ''
+  X:
+    0: ''
+  Y:
+    0: ''
+  A:
+    0: ''
+  B:
+    0: ''
+  r_stick:
+    0: head_look_exit
+    1: head_look_exit
+  l_stick:
+    0: light_toggle
+    1: light_toggle
+    2: light_toggle
+  start:
+    0: ''
+  back:
+    0: ''
+
+# Head look IK mode
+mode__head_look_ik:
+  # Axes
+  dpad_x:
+    0: g__head_look_ik__
+  dpad_y:
+    0: g__head_look_ik__
+  r_stick_x:
+    0: g__head_look_ik__
+  r_stick_y:
+    0: g__head_look_ik__
+  l_stick_x:
+    0: g__head_look_ik__
+  l_stick_y:
+    0: g__head_look_ik__
+  # Buttons
+  l_bumper:
+    0: ''
+  r_bumper:
+    0: ''
+  l_trigger:
+    0: ''
+  r_trigger:
+    0: ''
+  X:
+    0: ''
+  Y:
+    0: ''
+  A:
+    0: ''
+  B:
+    0: ''
+  r_stick:
+    0: head_look_exit
+    1: head_look_exit
+  l_stick:
+    0: light_toggle
+    1: light_toggle
+    2: light_toggle
+  start:
+    0: ''
+  back:
+    0: ''

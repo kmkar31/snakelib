@@ -1,0 +1,28 @@
+<!-- Publishes required images to their designated topics and launches rqt image viewer
+
+1. Launches all raw camera nodes:
+    - stereo camera streamer
+    - fisheye camera streamer
+    - thermal camera streamer
+
+2. Uses the image processing node to postprocess the images. Features:
+    - Rotate images
+    - Overlay images
+
+3. Launch rqt image viewer.
+-->
+
+<launch>
+    <arg name="camera_config_file" default="$(find snakelib_camera)/param/camera_params.yaml" />
+
+    <rosparam file="$(arg camera_config_file)" command="load" />
+
+    <node type="toggle_streaming.py" name="toggle_streaming" pkg="snakelib_camera" />
+
+    <node pkg="snakelib_camera" type="pinhole_node" name="pinhole_node" output="screen"/>
+    <node pkg="snakelib_camera" type="thermal_node" name="thermal_node" output="screen"/>
+    <node pkg="snakelib_camera" type="image_processing_node" name="image_processing_node" output="screen"/>
+
+    <!-- <node type="rviz" name="rviz" pkg="rviz" args="-d $(find snakelib_camera)/rviz/rviz_feed.rviz" /> -->
+
+</launch>

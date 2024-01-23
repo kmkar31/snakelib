@@ -1,0 +1,10 @@
+<launch>
+    <arg name="config_file" default="$(find snakelib_control)/param/snake_params.yaml" />
+    <rosparam file="$(arg config_file)" command="load" />
+
+    <node pkg="snakelib_hebi" type="hebi_control_interface_node" name="hebi_control_interface_node" output="screen">
+    </node >
+
+    <node pkg="snakelib_hebi" type="hebi_sensor_interface_node" name="hebi_sensor_interface_node" output="screen">
+    </node >
+</launch>

@@ -1,0 +1,20 @@
+#!/usr/bin/env python3
+
+""" Node that publishes Joystick commands to run.
+
+Uses the default gait parameters.
+"""
+
+from snakelib_control.joystick_teleop import JoystickTeleop
+import rospy
+
+if __name__ == "__main__":
+
+    snake_type = rospy.get_param("snake_type", "REU")
+
+    joystick_teleop = JoystickTeleop(snake_type)
+
+    try:
+        joystick_teleop.run()
+    except rospy.ROSInterruptException:
+        pass

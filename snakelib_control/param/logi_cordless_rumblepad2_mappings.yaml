@@ -1,0 +1,27 @@
+# Provides mappings between the index of the concatenated joy message from the Logitech Cordless RumblePad 2 to user readable button names.
+# Note that we have concatenated the axes and button states into one single array.
+# LED beside MODE button on RumblePad2 joystick should be turned on and joystick should be in "Direct" input mode for these mappings to work.
+# The button names mapped here are the names that are used in the snakelib_control/param/joy_to_gait.yaml file.
+# 'back' button will always be used to switch between modes.
+# On the Axes right and down are negative values, left and up are positive values.
+
+# Axes
+0: dpad_x
+1: dpad_y
+2: r_stick_x
+3: r_stick_y
+4: l_stick_x
+5: l_stick_y
+# Buttons
+6: X
+7: A
+8: B
+9: Y
+10: l_bumper
+11: r_bumper
+12: l_trigger
+13: r_trigger
+14: back
+15: start
+16: l_stick
+17: r_stick

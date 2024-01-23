@@ -1,0 +1,13 @@
+# Known issues
+- Sensor watch dogs throws unreasonable number of warnings.
+- Sometimes gaitlib controller is intialized with empty string for desired gait.
+- When update is called for such controller, it throws error for parameters not being found.
+
+# TODO
+- Add capability to hebi node to reconnect upon lost connection.
+- Replace HEBI sensor message with default ROS messages.
+- Rolling helix in pole climb is oscillating for fixed tightness. Might want to tune: 
+    - Motor gains
+    - Gait parameters
+- Add camera launch to demo application
+- Thermal camera tuning

@@ -1,0 +1,31 @@
+camera_frequency: 30
+foreground_alpha: 0.4
+overlay_foreground: thermal
+overlay_background: pinhole
+
+stream_thermal: True
+stream_fisheye: False
+stream_pinhole: True
+stream_overlay: False
+
+rotate_image: True
+smooth_rotate_image: False
+max_delta: 20
+head_roll_history_len: 10
+led: False
+
+thermal_img_rows: 12
+thermal_img_cols: 16
+thermal_byte_size: 4
+min_temp: 25
+max_temp: 50
+ip: 192.168.8.132
+port: 8082
+thermal_camera_frequency: 30
+
+pinhole_cam_address: http://192.168.8.132:8080/?action=stream
+fisheye_cam_address: http://192.168.8.132:8081/?action=stream
+
+process_fisheye: False
+process_pinhole: True
+process_thermal: True

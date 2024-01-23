@@ -1,0 +1,25 @@
+<launch>
+    <!-- All snake parameters are defined in this file. -->
+    <rosparam file="$(find snakelib_control)/param/snake_params.yaml" command="load" />
+
+    <!-- Joy node -->
+    <node respawn="true" name="snake_joy" pkg="joy" type="joy_node">
+        <param name="dev" type="string" value="/dev/input/js0" />
+    </node>
+
+    <!-- Teleop node -->
+    <node pkg="snakelib_control" type="joystick_teleop_node" name="joystick_teleop_node" output="screen"/>
+
+    <!-- Pybullet -->
+    <arg name="config_file" default="$(find snakelib_bullet)/param/sim_params.yaml" />
+    <arg name="urdf_path" default="$(find snakelib_description)/reu_snake/reu_snake.urdf" />
+
+    <node pkg="snakelib_bullet" type="pybullet_interface.py" name="pybullet_interface" output="screen">
+        <rosparam file="$(arg config_file)" command="load" />
+        <param name="urdf_path" type="string" value="$(arg urdf_path)" />
+    </node >
+    
+    <!-- Command Manager Node-->
+    <node pkg="snakelib_control" type="command_manager_node" name="command_manager" output="screen"/>
+    
+</launch>

@@ -1,0 +1,3 @@
+<launch>
+    <node name="SnakeLib_GUI" pkg="snakelib_gui" type="SnakeLib_GUI" output="screen"/>
+</launch>

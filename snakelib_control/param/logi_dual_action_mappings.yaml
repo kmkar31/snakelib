@@ -1,0 +1,28 @@
+# Provides mappings between the index of the concatenated joy message from the Logitech Dual Action to user readable button names.
+# Note that we have concatenated the axes and button states into one single array.
+# LED beside MODE button on Dual Action joystick should be turned off.
+# The numbers commented beside button names are the actual button numbers on the joystick. 
+# The button names mapped here are the names that are used in the snakelib_control/param/joy_to_gait.yaml file.
+# 'back' button will always be used to switch between modes.
+# On the Axes right and down are negative values, left and up are positive values.
+
+# Axes
+0: l_stick_x
+1: l_stick_y
+2: r_stick_x
+3: r_stick_y
+4: dpad_x
+5: dpad_y
+# Buttons
+6: X # 1
+7: A # 2
+8: B # 3
+9: Y # 4
+10: l_bumper # 5
+11: r_bumper # 6
+12: l_trigger # 7
+13: r_trigger # 8
+14: back # 9
+15: start # 10
+16: l_stick
+17: r_stick

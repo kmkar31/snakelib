@@ -1,0 +1,4 @@
+string stream_name
+bool on
+---
+bool success

@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>snakelib_gui</name>
+  <version>0.0.0</version>
+  <description>The snakelib_gui package</description>
+
+  <maintainer email="ddhrafan@andrew.cmu.edu">Devansh Dhrafani</maintainer>
+  <maintainer email="aorekhov@andrew.cmu.edu">Andrew Orekhov</maintainer>
+  <maintainer email="ashutos2@andrew.cmu.edu">Ashutosh Gupta</maintainer>
+
+  <license>TODO</license>
+
+  <build_depend>message_generation</build_depend>
+  <exec_depend>message_runtime</exec_depend>
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>rospy</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <build_export_depend>rospy</build_export_depend>
+  <build_export_depend>std_msgs</build_export_depend>
+  <exec_depend>rospy</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+
+  <export>
+  </export>
+</package>

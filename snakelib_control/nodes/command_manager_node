@@ -1,0 +1,13 @@
+#!/usr/bin/env python3
+
+from snakelib_control.command_manager import CommandManager
+import rospy
+
+if __name__ == "__main__":
+
+    command_manager = CommandManager()
+
+    try:
+        command_manager.run()
+    except rospy.ROSInterruptException:
+        pass

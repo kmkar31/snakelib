@@ -1,0 +1,13 @@
+#!/usr/bin/env python
+
+import rospy
+from snakelib_camera.thermal_camera_interface import ThermalCameraStreamer
+
+
+if __name__ == "__main__":
+    rospy.init_node("thermal_node", anonymous=False)
+    camera_interface = ThermalCameraStreamer()
+    try:
+        camera_interface.start()
+    except rospy.ROSInterruptException:
+        pass

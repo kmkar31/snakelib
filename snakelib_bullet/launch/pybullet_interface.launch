@@ -1,0 +1,11 @@
+<launch>
+
+    <arg name="config_file" default="$(find snakelib_bullet)/param/sim_params.yaml" />
+    <arg name="urdf_path" default="$(find snakelib_description)/rsnake/rsnake.urdf" />
+
+    <node pkg="snakelib_bullet" type="pybullet_interface.py" name="pybullet_interface" output="screen">
+        <rosparam file="$(arg config_file)" command="load" />
+        <param name="urdf_path" type="string" value="$(arg urdf_path)" />
+    </node >
+
+</launch>

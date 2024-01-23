@@ -1,0 +1,13 @@
+#!/usr/bin/env python
+
+import rospy
+from snakelib_camera.usb_camera_interface import PinholeCameraStreamer
+
+
+if __name__ == "__main__":
+    rospy.init_node("pinhole_node", anonymous=False)
+    camera_interface = PinholeCameraStreamer()
+    try:
+        camera_interface.start()
+    except rospy.ROSInterruptException:
+        pass
