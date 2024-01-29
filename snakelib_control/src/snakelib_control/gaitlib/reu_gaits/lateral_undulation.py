@@ -1,3 +1,5 @@
+import numpy as np
+
 def lateral_undulation(self, t=0, params=None):
 
     params = {} if params is None else params
@@ -10,4 +12,10 @@ def lateral_undulation(self, t=0, params=None):
     )
 
     # Math formulation of lateral undulation is identical to sidewinding
-    return self.compound_serpenoid(t, self.current_gait_params)
+    N = self.num_modules
+    alpha = np.zeros(N)
+
+    for n in range(N):
+        alpha[n] = self.compound_serpenoid(t, n, self.current_gait_params)
+
+    return alpha

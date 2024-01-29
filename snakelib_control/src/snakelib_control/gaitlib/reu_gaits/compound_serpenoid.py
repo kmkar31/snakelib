@@ -1,7 +1,4 @@
-from typing import Dict
-
 import numpy as np
-from .utils import make_module_numbers, flip_axes
 
 # In future, this structure can allow PyTorch / TensorFlow
 def sin(*args, **kwargs):
@@ -10,7 +7,7 @@ def sin(*args, **kwargs):
 def stack(*args, **kwargs):
     return np.stack(*args, **kwargs)
 
-def compound_serpenoid(self, t, params) -> np.ndarray:
+def compound_serpenoid(self, t,n, params) -> np.ndarray:
     r"""Vectorized implementation of the compound serpenoid equation
 
     ...math::
@@ -25,16 +22,10 @@ def compound_serpenoid(self, t, params) -> np.ndarray:
     Returns:
         alpha (np.ndarray): Array of target angles for each module
     """
-    N = self.num_modules
-    n_samples = 1 if (isinstance(t, float) or isinstance(t, int)) else len(t)
 
-    even_n = make_module_numbers(N, n_samples, even=True)
-    odd_n = make_module_numbers(N, n_samples, even=False)
+    if n%2 == 0:
+        alpha = params['beta_even'] + params['A_even'] * sin(params['wS_even'] * n- params['wT_even'] * t)
+    else:
+        alpha = params['beta_odd'] + params['A_odd'] * sin(params['wS_odd'] * n - params['wT_odd'] * t + params['delta'])
 
-    alpha_even = params['beta_even'] + params['A_even'] * sin(params['wS_even'] * even_n - params['wT_even'] * t)
-    alpha_odd = params['beta_odd'] + params['A_odd'] * sin(params['wS_odd'] * odd_n - params['wT_odd'] * t + params['delta'])
-
-    alpha_stacked = stack([alpha_even, alpha_odd], axis=-1)
-    alpha = alpha_stacked.reshape(*alpha_stacked[:-2], -1)
-
-    return flip_axes(alpha)
+    return alpha*(-1)**np.floor(n/2)
