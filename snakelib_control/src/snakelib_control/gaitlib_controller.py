@@ -36,13 +36,15 @@ class GaitlibController(AbstractController):
         # Gaitlib is only valid for these snake types
         if self._snake_type == "REU":
             self._gaitlib = ReuGaits()
-            self._gaitlib.num_modules = len(self._module_names)
         elif self._snake_type == "SEA":
             self._gaitlib = SeaGaits()
         elif self._snake_type == "RSNAKE":
             self._gaitlib = RsnakeGaits()
+            
         else:
             raise ValueError("Invalid snake_type.")
+
+        self._gaitlib.num_modules = len(self._module_names)
 
         # Dictionary defining the current gait parameters.
         self._gait_param_dict = self._snake_param.get("gait_params", {})
