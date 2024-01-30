@@ -14,14 +14,14 @@
     </node>
 
     <!-- Teleop Node -->
-    <node pkg="snakelib_control" type="joystick_teleop_node" name="joystick_teleop_node" output="screen"/>
+    <node pkg="snakelib_control" type="joystick_teleop_node" name="joystick_teleop_node"/>
     <!-- Command Manager Node-->
-    <node pkg="snakelib_control" type="command_manager_node" name="command_manager" output="screen"/>
+    <node pkg="snakelib_control" type="command_manager_node" name="command_manager"/>
 
     <!-- Hebi Interface Node -->
-    <node pkg="snakelib_hebi" type="hebi_control_interface_node" name="hebi_control_interface_node" output="screen" respawn="true"/>
-    <node pkg="snakelib_hebi" type="hebi_sensor_interface_node" name="hebi_sensor_interface_node" output="screen" respawn="true"/>
-    <node pkg="snakelib_hebi" type="snake_visualizer_node" name="snake_visualizer_node" output="screen" respawn="true"/>
+    <node pkg="snakelib_hebi" type="hebi_control_interface_node" name="hebi_control_interface_node" respawn="true"/>
+    <node pkg="snakelib_hebi" type="hebi_sensor_interface_node" name="hebi_sensor_interface_node" respawn="true"/>
+    <node pkg="snakelib_hebi" type="snake_visualizer_node" name="snake_visualizer_node" respawn="true"/>
 
     <!-- Robot description-->
     <param name="robot_description" textfile="$(find snakelib_description)/$(arg snake_type)_snake/$(arg snake_type)_snake.urdf"/>

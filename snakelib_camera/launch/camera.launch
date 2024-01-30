@@ -19,9 +19,9 @@
 
     <node type="toggle_streaming.py" name="toggle_streaming" pkg="snakelib_camera" />
 
-    <node pkg="snakelib_camera" type="pinhole_node" name="pinhole_node" output="screen"/>
-    <node pkg="snakelib_camera" type="thermal_node" name="thermal_node" output="screen"/>
-    <node pkg="snakelib_camera" type="image_processing_node" name="image_processing_node" output="screen"/>
+    <node pkg="snakelib_camera" type="pinhole_node" name="pinhole_node"/>
+    <node pkg="snakelib_camera" type="thermal_node" name="thermal_node"/>
+    <node pkg="snakelib_camera" type="image_processing_node" name="image_processing_node"/>
 
     <!-- <node type="rviz" name="rviz" pkg="rviz" args="-d $(find snakelib_camera)/rviz/rviz_feed.rviz" /> -->
 
